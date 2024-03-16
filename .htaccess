@@ -1,0 +1,11 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On 
+  Options -Indexes 
+  RewriteBase / 
+  RewriteCond %{REQUEST_FILENAME} !-f 
+  RewriteCond %{REQUEST_FILENAME} !-d 
+  RewriteRule ^(.*)$ index.php/$1 [L]
+  RewriteRule ^ui/header.php header.php?page=$1&nama=$1 [L]
+  RewriteRule ^ui/header.php header.php?page=$1&email=$1 [L]
+  RewriteRule ^ui/header.php header.php?page=$1&nis=$1 [L]
+</IfModule>
