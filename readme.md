@@ -1,6 +1,6 @@
 # Latihan Project 9
 
-<h3 style="font-size:medium; font-family:sans-serif;">Latihan Project 9</h3>
+<h3 style="font-size:medium; font-family:sans-serif; font-wieght:500;">Latihan Project 9</h3>
 <span style="font-size:16px; font-family:sans-serif; color:white;">
 <p>Tema : Pembuatan Website Sekolah</p>
 <ol type="1">
