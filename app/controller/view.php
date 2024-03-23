@@ -113,6 +113,14 @@ class ViewPelajaran {
         $nama = $_SESSION['nama_pengguna'];
         echo "<script lang='javascript'>location.href='../ui/header.php?page=pelajaran&nama=$nama'</script>";
     }
+
+    public function SubjectEdit(){
+        $id = htmlspecialchars($_POST["id_pelajaran"]) ? htmlentities($_POST["id_pelajaran"]) : $_POST["id_pelajaran"];
+        $mapel = htmlspecialchars($_POST["pelajaran"]) ? htmlentities($_POST["pelajaran"]) : $_POST["pelajaran"];
+        $this->konfig->editSubject($mapel,$id);
+        $nama = $_SESSION['nama_pengguna'];
+        echo "<script lang='javascript'>location.href='../ui/header.php?page=pelajaran&nama=$nama'</script>";
+    }
     
     public function SubjectRead(){
         $row = $this->konfig->readsubject();
@@ -124,6 +132,15 @@ class ViewPelajaran {
         $id = htmlspecialchars($_GET["id"]) ? htmlentities($_GET['id']) : $_GET['id'];
         $row = $this->konfig->readsubjectedit($id);
         $hasil = $row->fetchAll();
+        return $hasil;
+    }
+
+    public function SubjectHapus(){
+        $id = htmlspecialchars($_POST["id_pelajaran"]) ? htmlentities($_POST["id_pelajaran"]) : $_POST["id_pelajaran"];
+        $row = $this->konfig->deleteSubject($id);
+        $hasil = $row->fetch();
+        $nama = $_SESSION['nama_pengguna'];
+        echo "<script lang='javascript'>location.href='../ui/header.php?page=pelajaran&nama=$nama'</script>";
         return $hasil;
     }
 }

@@ -186,6 +186,17 @@ class Pelajaran {
         $row->execute(array($mapel,$create_date));
         return $row;
     }
+
+    public function editSubject($mapel,$id){
+        $id = htmlspecialchars($_POST["id_pelajaran"]) ? htmlentities($_POST["id_pelajaran"]) : $_POST["id_pelajaran"];
+        $mapel = htmlspecialchars($_POST["pelajaran"]) ? htmlentities($_POST["pelajaran"]) : $_POST["pelajaran"];
+        /* Create Table Save */
+        $table = "tb_pelajaran";
+        $sql = "UPDATE $table SET pelajaran = ? WHERE id_pelajaran = ?"; 
+        $row = $this->db->prepare($sql);
+        $row->execute(array($mapel,$id));
+        return $row;
+    }
     
     public function readsubject(){
         /* Table Read */
@@ -201,6 +212,15 @@ class Pelajaran {
         /* Table Read */
         $table = "tb_pelajaran";
         $sql = "SELECT * FROM $table WHERE id_pelajaran = ?"; 
+        $row = $this->db->prepare($sql);
+        $row->execute(array($id));
+        return $row;
+    }
+
+    public function deleteSubject($id){
+        $id = htmlspecialchars($_POST["id_pelajaran"]) ? htmlentities($_POST["id_pelajaran"]) : $_POST["id_pelajaran"];
+        $table = "tb_pelajaran";
+        $sql = "DELETE FROM $table WHERE id_pelajaran = ?";
         $row = $this->db->prepare($sql);
         $row->execute(array($id));
         return $row;

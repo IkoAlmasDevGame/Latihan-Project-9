@@ -175,6 +175,12 @@
                     case 'tambah-mapel':
                         $viewPelajaran->SubjectCreate();
                         break;
+                    case 'edit-mapel':
+                        $viewPelajaran->SubjectEdit();
+                        break;
+                    case 'hapus-pelajaran':
+                        $viewPelajaran->SubjectHapus();
+                        break;
                     /* Pelajaran Akhir*/  
 
                     default:

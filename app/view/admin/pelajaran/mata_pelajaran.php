@@ -33,14 +33,14 @@
                                 <a href="?page=beranda&nama=<?=$_SESSION['nama_pengguna']?>"
                                     class="text-decoration-none text-primary">Beranda</a>
                             </li>
-                            <li class="breadcrumb breadcrumb-item">
-                                <a href="?page=pelajaran&nama=<?=$_SESSION['nama_pengguna']?>"
-                                    class="text-decoration-none text-primary">Mata Pelajaran</a>
-                            </li>
                             <?php 
                                 if(isset($_GET['id_kelas'])){
                                     if($id == $iHasil['id_kelas']){
                             ?>
+                            <li class="breadcrumb breadcrumb-item">
+                                <a href="?page=kelas&nama=<?=$_SESSION['nama_pengguna']?>"
+                                    class="text-decoration-none text-primary">Kelas Pelajar</a>
+                            </li>
                             <li class="breadcrumb breadcrumb-item">
                                 <a href="?page=mapel&nama=<?=$_SESSION['nama_pengguna']?>&id_kelas=<?=$iHasil['id_kelas']?>"
                                     class="text-decoration-none text-primary">Mata Pelajaran 2</a>
@@ -49,6 +49,10 @@
                                 }
                             }else{
                             ?>
+                            <li class="breadcrumb breadcrumb-item">
+                                <a href="?page=pelajaran&nama=<?=$_SESSION['nama_pengguna']?>"
+                                    class="text-decoration-none text-primary">Mata Pelajaran</a>
+                            </li>
                             <li class="breadcrumb breadcrumb-item">
                                 <a href="?page=mapel&nama=<?=$_SESSION['nama_pengguna']?>"
                                     class="text-decoration-none text-primary">Mata Pelajaran 2</a>
@@ -135,6 +139,7 @@
                                                 <?php 
                                                     $id_kelas = $iHasil['id_kelas'];
                                                     $id_jam = $isi['id_jam'];
+
                                                     $sql = "SELECT * FROM tb_jadwal inner join tb_pelajaran on tb_pelajaran.id_pelajaran = tb_jadwal.id_pelajaran WHERE id_jam = '$id_jam' && id_kelas = '$id_kelas' && hari='$hari'";
                                                     $row = $configs->prepare($sql);
                                                     $row->execute();
@@ -160,6 +165,13 @@
                                                         }
                                                     ?>
                                                 </select>
+                                            </form>
+                                            <form action="" id="form_id_2_<?=$j."_".$isi['id_jam']?>" method="post">
+                                                <?php 
+                                                    $id_kelas = $iHasil['id_kelas'];
+                                                    $id_jam = $isi['id_jam'];
+
+                                                ?>
                                             </form>
                                         </td>
                                         <?php

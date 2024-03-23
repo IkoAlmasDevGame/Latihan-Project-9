@@ -109,9 +109,6 @@
                                 <a href="?page=pelajaran&nama=<?=$_SESSION['nama_pengguna']?>" aria-current="page"
                                     class="btn btn-warning active"><i class="fas fa-book-open hover"></i> Mata
                                     Pelajaran</a>
-                                <a href="?page=mapel&nama=<?=$_SESSION['nama_pengguna']?>" aria-current="page"
-                                    class="btn btn-warning active"><i class="fas fa-book-open hover"></i> Mata
-                                    Pelajaran 2</a>
                             </div>
                         </div>
                         <div class="table-responsive-md table-responsive-lg">
@@ -140,7 +137,8 @@
                                                     aria-current="page" class="btn btn-warning">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
-                                                <a href="?act=hapus-pelajaran" aria-current="page"
+                                                <a href="?act=hapus-pelajaran&id_pelajaran=<?php echo $isi['id_pelajaran']?>"
+                                                    aria-current="page" onclick="javascript:return confirm('')"
                                                     class="btn btn-danger">
                                                     <i class="fas fa-trash"></i>
                                                 </a>
