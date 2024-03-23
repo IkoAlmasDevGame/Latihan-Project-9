@@ -47,10 +47,10 @@ class ViewGuru {
         return $hasil;
     }
 
-    public function TeacherEditRead(){
+    public function TeacherEditRead($id){
         $id = htmlspecialchars($_GET["id_guru"]) ? htmlentities($_GET["id_guru"]) : $_GET["id_guru"];
         $row = $this->konfig->ReadEditTeacher($id);
-        $hasil = $row->fetch();
+        $hasil = $row->fetchAll();
         return $hasil;
     }
 
@@ -90,6 +90,12 @@ class ViewKelas {
     {
         $this->konfig = new Kelas($db);
     }
+
+    public function read(){
+        $row = $this->konfig->readClass();
+        $hasil = $row->fetchAll();
+        return $hasil;
+    }
 }
 
 use model\Pelajaran;
@@ -98,6 +104,27 @@ class ViewPelajaran {
     public function __construct($db)
     {
         $this->konfig = new Pelajaran($db);
+    }
+
+    public function SubjectCreate(){
+        $mapel = htmlspecialchars($_POST["pelajaran"]) ? htmlentities($_POST["pelajaran"]) : $_POST["pelajaran"];
+        $create_date = Date('d-m-Y');
+        $this->konfig->createsubject($mapel,$create_date);
+        $nama = $_SESSION['nama_pengguna'];
+        echo "<script lang='javascript'>location.href='../ui/header.php?page=pelajaran&nama=$nama'</script>";
+    }
+    
+    public function SubjectRead(){
+        $row = $this->konfig->readsubject();
+        $hasil = $row->fetchAll();
+        return $hasil;
+    }
+
+    public function SubjectReadEdit($id){
+        $id = htmlspecialchars($_GET["id"]) ? htmlentities($_GET['id']) : $_GET['id'];
+        $row = $this->konfig->readsubjectedit($id);
+        $hasil = $row->fetchAll();
+        return $hasil;
     }
 }
 

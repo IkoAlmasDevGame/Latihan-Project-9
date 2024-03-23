@@ -79,10 +79,16 @@
                     case 'kelas':
                         require_once("../kelas/index.php");
                         break;
-                        
+                     
+                    /* Pelajaran */
                     case 'pelajaran':
                         require_once("../pelajaran/index.php");
                         break;
+                        
+                    case 'mapel':
+                        require_once("../pelajaran/mata_pelajaran.php");
+                        break;
+                    /* */
                         
                     case 'pembayaran':
                         require_once("../pembayaran/index.php");
@@ -136,11 +142,13 @@
                     case 'hapus-guru':
                         $viewGuru->TeacherDelete();
                         break;
+                    /* Guru Akhir */
 
                     /* Account */
                     case 'tambah-akun':
                         $viewAccount->Register();
                         break;
+                    /* Account Akhir */
 
                     /* pendaftaran */ 
                     case 'tambah-siswa-baru':
@@ -161,6 +169,13 @@
                     case 'hapus-jadwal-jam':
                         $viewJadwal->JadwalHapus();
                         break;
+                    /* Jadwal Akhir */
+
+                    /* Pelajaran */
+                    case 'tambah-mapel':
+                        $viewPelajaran->SubjectCreate();
+                        break;
+                    /* Pelajaran Akhir*/  
 
                     default:
                         require_once("../dashboard/index.php");

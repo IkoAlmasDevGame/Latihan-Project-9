@@ -11,4 +11,5 @@
   RewriteRule ^ui/header.php header.php?page=$1&nis=$1[L]
   RewriteRule ^ui/header.php header.php?act=$1 [L]
   RewriteRule ^ui/header.php header.php?aksi=$1&nama=$1 [L]
+  RewriteRule ^ui/header.php header.php?aksi=$1&id_kelas=$1 [L]
 </IfModule>

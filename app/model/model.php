@@ -157,6 +157,14 @@ class Kelas {
     {
         $this->db = $db;
     }
+
+    public function readClass(){
+        $table = "tb_kelas";
+        $sql = "SELECT * FROM $table Order by id_kelas asc";
+        $row = $this->db->prepare($sql);
+        $row->execute();
+        return $row;
+    }
 }
 
 // 5
@@ -166,6 +174,36 @@ class Pelajaran {
     public function __construct($db)
     {
         $this->db = $db;
+    }
+
+    public function createsubject($mapel,$create_date){
+        $mapel = htmlspecialchars($_POST["pelajaran"]) ? htmlentities($_POST["pelajaran"]) : $_POST["pelajaran"];
+        $create_date = Date('d-m-Y');
+        /* Create Table Save */
+        $table = "tb_pelajaran";
+        $sql = "INSERT INTO $table (pelajaran,create_timestamp) VALUES (?,?)"; 
+        $row = $this->db->prepare($sql);
+        $row->execute(array($mapel,$create_date));
+        return $row;
+    }
+    
+    public function readsubject(){
+        /* Table Read */
+        $table = "tb_pelajaran";
+        $sql = "SELECT * FROM $table Order by id_pelajaran asc"; 
+        $row = $this->db->prepare($sql);
+        $row->execute();
+        return $row;
+    }
+    
+    public function readsubjectedit($id){
+        $id = htmlspecialchars($_GET["id"]) ? htmlentities($_GET['id']) : $_GET['id'];
+        /* Table Read */
+        $table = "tb_pelajaran";
+        $sql = "SELECT * FROM $table WHERE id_pelajaran = ?"; 
+        $row = $this->db->prepare($sql);
+        $row->execute(array($id));
+        return $row;
     }
 }
 
