@@ -219,19 +219,19 @@
                                         $no = 1;
                                         $nama = $_SESSION['nama_pengguna'];
                                         foreach ($ii as $i) {
-                                            $hadir = $configs->prepare("SELECT count(keterangan[h]) as hadir FROM tb_absensi WHERE keterangan = 'h'");
+                                            $hadir = $configs->prepare("SELECT count(keterangan[h]) as hadir FROM tb_absensi inner join tb_kelas on tb_absensi.id_kelas = tb_kelas.id_kelas WHERE keterangan = 'h' && tb_kelas.id_kelas = '$i[id_kelas]'");
                                             $hadir->execute();
                                             $h = $hadir->fetch();
 
-                                            $sakit = $configs->prepare("SELECT count(keterangan[s]) as sakit FROM tb_absensi WHERE keterangan = 's'");
+                                            $sakit = $configs->prepare("SELECT count(keterangan[s]) as sakit FROM tb_absensi inner join tb_kelas on tb_absensi.id_kelas = tb_kelas.id_kelas WHERE keterangan = 's' && tb_kelas.id_kelas = '$i[id_kelas]'");
                                             $sakit->execute();
                                             $s = $sakit->fetch();
                                             
-                                            $izin = $configs->prepare("SELECT count(keterangan[i]) as izin FROM tb_absensi WHERE keterangan = 'i'");
+                                            $izin = $configs->prepare("SELECT count(keterangan[i]) as izin FROM tb_absensi inner join tb_kelas on tb_absensi.id_kelas = tb_kelas.id_kelas WHERE keterangan = 'i' && tb_kelas.id_kelas = '$i[id_kelas]'");
                                             $izin->execute();
                                             $i = $izin->fetch();
 
-                                            $alfa = $configs->prepare("SELECT count(keterangan[a]) as alfa FROM tb_absensi WHERE keterangan = 'a'");
+                                            $alfa = $configs->prepare("SELECT count(keterangan[a]) as alfa FROM tb_absensi inner join tb_kelas on tb_absensi.id_kelas = tb_kelas.id_kelas WHERE tb_absensi.keterangan = 'a' && tb_kelas.id_kelas = '$i[id_kelas]'");
                                             $alfa->execute();
                                             $a = $alfa->fetch();
                                     ?>
