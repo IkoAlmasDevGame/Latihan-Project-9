@@ -192,6 +192,24 @@
                         break;
                     /* Absensi Akhir */
 
+                    /* Pesan */
+                    case 'kirim-pesan':
+                        $viewMessage->send();
+                    break;
+                    
+                    case 'balas-pesan':
+                        $viewMessage->balas();
+                    break;
+                    
+                    case 'edit-pesan':
+                        $viewMessage->edit();
+                    break;
+
+                    case 'hapus':
+                        $viewMessage->delete();
+                    break;
+                    /* Pesan Akhir */ 
+
                     default:
                         require_once("../dashboard/index.php");
                         break;

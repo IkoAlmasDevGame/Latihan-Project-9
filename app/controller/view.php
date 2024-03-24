@@ -145,7 +145,7 @@ class ViewPelajaran {
     }
 
     public function SubjectHapus(){
-        $id = htmlspecialchars($_POST["id_pelajaran"]) ? htmlentities($_POST["id_pelajaran"]) : $_POST["id_pelajaran"];
+        $id = htmlspecialchars($_GET["id_pelajaran"]) ? htmlentities($_GET["id_pelajaran"]) : $_GET["id_pelajaran"];
         $row = $this->konfig->deleteSubject($id);
         $hasil = $row->fetch();
         $nama = $_SESSION['nama_pengguna'];
@@ -297,7 +297,7 @@ class ViewJadwal {
     }
 
     public function JadwalHapus(){
-        $id = htmlspecialchars($_POST["id_jam"]) ? htmlentities($_POST["id_jam"]) : $_POST["id_jam"];
+        $id = htmlspecialchars($_GET["id_jam"]) ? htmlentities($_GET["id_jam"]) : $_GET["id_jam"];
         $this->konfig->DeleteJadwal($id);
         $nama = $_SESSION['nama_pengguna'];
         echo "<script lang='javascript'>location.href='../ui/header.php?page=jadwal&nama=$nama'</script>";
@@ -336,6 +336,41 @@ class ViewMessage {
     public function __construct($db)
     {
         $this->konfig = new Message($db);
+    }
+
+    public function send(){
+        $from = htmlspecialchars($_POST['toFrom']) ? htmlentities($_POST["toFrom"]) : $_POST["toFrom"];
+        $to = htmlspecialchars($_POST['toTo']) ? htmlentities($_POST["toTo"]) : $_POST["toTo"];
+        $subject = htmlspecialchars($_POST['toSubject']) ? htmlentities($_POST["toSubject"]) : $_POST["toSubject"];
+        $message = htmlspecialchars($_POST['toMessage']) ? htmlentities($_POST["toMessage"]) : $_POST["toMessage"];
+        $this->konfig->SendMessage($from,$to,$subject,$message);
+        echo "<script lang='javascript'>location.href='../ui/header.php?page=pesan&email=$from'</script>";
+    }
+
+    public function balas(){
+        $from = htmlspecialchars($_POST['toFrom']) ? htmlentities($_POST["toFrom"]) : $_POST["toFrom"];
+        $to = htmlspecialchars($_POST['toTo']) ? htmlentities($_POST["toTo"]) : $_POST["toTo"];
+        $subject = htmlspecialchars($_POST['toSubject']) ? htmlentities($_POST["toSubject"]) : $_POST["toSubject"];
+        $message = htmlspecialchars($_POST['toMessage']) ? htmlentities($_POST["toMessage"]) : $_POST["toMessage"];
+        $this->konfig->ReplyMessage($from,$to,$subject,$message);
+        echo "<script lang='javascript'>location.href='../ui/header.php?page=pesan&email=$from'</script>";
+    }
+
+    public function edit(){
+        $id = htmlspecialchars($_POST['id_pesan']) ? htmlentities($_POST["id_pesan"]) : $_POST["id_pesan"];
+        $from = htmlspecialchars($_POST['toFrom']) ? htmlentities($_POST["toFrom"]) : $_POST["toFrom"];
+        $to = htmlspecialchars($_POST['toTo']) ? htmlentities($_POST["toTo"]) : $_POST["toTo"];
+        $subject = htmlspecialchars($_POST['toSubject']) ? htmlentities($_POST["toSubject"]) : $_POST["toSubject"];
+        $message = htmlspecialchars($_POST['toMessage']) ? htmlentities($_POST["toMessage"]) : $_POST["toMessage"];
+        $this->konfig->EditMessage($from,$to,$subject,$message,$id);
+        echo "<script lang='javascript'>location.href='../ui/header.php?page=pesan&email=$from'</script>";
+    }
+
+    public function delete(){
+        $id_pesan = htmlspecialchars($_GET['id']) ? htmlentities($_GET["id"]) : $_GET["id"];
+        $this->konfig->DeleteMessage($id_pesan);
+        $email = $_SESSION['email_pengguna'];
+        echo "<script lang='javascript'>location.href='../ui/header.php?page=pesan&email=$email'</script>";
     }
 }
 ?>

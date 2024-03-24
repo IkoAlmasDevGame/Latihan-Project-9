@@ -208,7 +208,7 @@
                                         </button>
                                         <button type="reset" class="btn btn-danger mx-1">
                                             <i class="fas fa-eraser"></i>
-                                            <span>Simpan</span>
+                                            <span>Hapus semua</span>
                                         </button>
                                     </div>
                                 </div>

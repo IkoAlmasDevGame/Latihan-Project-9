@@ -266,7 +266,7 @@ class Pelajaran {
     }
 
     public function deleteSubject($id){
-        $id = htmlspecialchars($_POST["id_pelajaran"]) ? htmlentities($_POST["id_pelajaran"]) : $_POST["id_pelajaran"];
+        $id = htmlspecialchars($_GET["id_pelajaran"]) ? htmlentities($_GET["id_pelajaran"]) : $_GET["id_pelajaran"];
         $table = "tb_pelajaran";
         $sql = "DELETE FROM $table WHERE id_pelajaran = ?";
         $row = $this->db->prepare($sql);
@@ -545,7 +545,7 @@ class Jadwal {
     }
 
     public function DeleteJadwal($id){
-        $id = htmlspecialchars($_POST["id_jam"]) ? htmlentities($_POST["id_jam"]) : $_POST["id_jam"];
+        $id = htmlspecialchars($_GET["id_jam"]) ? htmlentities($_GET["id_jam"]) : $_GET["id_jam"];
 
         /* Create Table Database */
         $table = "tb_jam";
@@ -623,6 +623,66 @@ class Message {
     public function __construct($db)
     {
         $this->db = $db;
+    }
+
+    public function SendMessage($from,$to,$subject,$message){
+        $table = "tb_pesan";
+        $from = htmlspecialchars($_POST['toFrom']) ? htmlentities($_POST["toFrom"]) : $_POST["toFrom"];
+        $to = htmlspecialchars($_POST['toTo']) ? htmlentities($_POST["toTo"]) : $_POST["toTo"];
+        $subject = htmlspecialchars($_POST['toSubject']) ? htmlentities($_POST["toSubject"]) : $_POST["toSubject"];
+        $message = htmlspecialchars($_POST['toMessage']) ? htmlentities($_POST["toMessage"]) : $_POST["toMessage"];
+
+        if($from == "" || $to == "" || $subject == "" || $message == ""){
+            echo "<script lang='javascript'>location.href='../ui/header.php?page=pesan&email=$from'</script>";
+            exit(0);
+        }
+        
+        $sql = "INSERT INTO $table (toFrom,toTo,toSubject,toMessage) VALUES (?,?,?,?)";
+        $row = $this->db->prepare($sql);
+        $row->execute(array($from,$to,$subject,$message));
+    }
+
+    public function ReplyMessage($from,$to,$subject,$message){
+        $table = "tb_pesan";
+        $from = htmlspecialchars($_POST['toFrom']) ? htmlentities($_POST["toFrom"]) : $_POST["toFrom"];
+        $to = htmlspecialchars($_POST['toTo']) ? htmlentities($_POST["toTo"]) : $_POST["toTo"];
+        $subject = htmlspecialchars($_POST['toSubject']) ? htmlentities($_POST["toSubject"]) : $_POST["toSubject"];
+        $message = htmlspecialchars($_POST['toMessage']) ? htmlentities($_POST["toMessage"]) : $_POST["toMessage"];
+
+        if($from == "" || $to == "" || $subject == "" || $message == ""){
+            echo "<script lang='javascript'>location.href='../ui/header.php?page=pesan&email=$from'</script>";
+            exit(0);
+        }
+        
+        $sql = "INSERT INTO $table (toFrom,toTo,toSubject,toMessage) VALUES (?,?,?,?)";
+        $row = $this->db->prepare($sql);
+        $row->execute(array($from,$to,$subject,$message));
+    }
+
+    public function EditMessage($from,$to,$subject,$message,$id){
+        $table = "tb_pesan";
+        $id = htmlspecialchars($_POST['id_pesan']) ? htmlentities($_POST["id_pesan"]) : $_POST["id_pesan"];
+        $from = htmlspecialchars($_POST['toFrom']) ? htmlentities($_POST["toFrom"]) : $_POST["toFrom"];
+        $to = htmlspecialchars($_POST['toTo']) ? htmlentities($_POST["toTo"]) : $_POST["toTo"];
+        $subject = htmlspecialchars($_POST['toSubject']) ? htmlentities($_POST["toSubject"]) : $_POST["toSubject"];
+        $message = htmlspecialchars($_POST['toMessage']) ? htmlentities($_POST["toMessage"]) : $_POST["toMessage"];
+
+        if($from == "" || $to == "" || $subject == "" || $message == "" || $id == ""){
+            echo "<script lang='javascript'>location.href='../ui/header.php?page=pesan&email=$from'</script>";
+            exit(0);
+        }
+
+        $sql = "UPDATE $table SET toFrom = ?, toTo = ?, toSubject = ?, toMessage = ? WHERE id_pesan = ?";
+        $row = $this->db->prepare($sql);
+        $row->execute(array($from,$to,$subject,$message,$id));
+    }
+
+    public function DeleteMessage($id_pesan){
+        $id_pesan = htmlspecialchars($_GET['id']) ? htmlentities($_GET["id"]) : $_GET["id"];
+        $sql = "DELETE FROM tb_pesan WHERE id_pesan = ?";
+        $row = $this->db->prepare($sql);
+        $id = array($id_pesan);
+        $row->execute($id);
     }
 }
 ?>
