@@ -174,6 +174,21 @@ CREATE TABLE `tb_user` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tb_pembayaran`
+--
+
+CREATE TABLE `tb_pembayaran` (
+  `id_pembayaran` int(11) NOT NULL,
+  `id_siswa` int(11) NOT NULL,
+  `id_kelas` int(11) NOT NULL,
+  `tanggal_input` varchar(12) NOT NULL,
+  `total` float NOT NULL,
+  `selesai` varchar(12) NOT NULL DEFAULT 'yes'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Indexes for dumped tables
 --
 
@@ -246,6 +261,14 @@ ALTER TABLE `tb_user`
   ADD PRIMARY KEY (`id_user`);
 
 --
+-- Indexes for table `tb_pembayaran`
+--
+ALTER TABLE `tb_pembayaran`
+  ADD PRIMARY KEY (`id_pembayaran`),
+  ADD KEY `id_siswa` (`id_siswa`),
+  ADD KEY `id_kelas` (`id_kelas`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -308,6 +331,12 @@ ALTER TABLE `tb_siswa`
 --
 ALTER TABLE `tb_user`
   MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `tb_pembayaran`
+--
+ALTER TABLE `tb_pembayaran`
+  MODIFY `id_pembayaran` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
