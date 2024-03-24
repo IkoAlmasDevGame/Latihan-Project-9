@@ -296,6 +296,7 @@ class Pendaftaran {
 
     public function CreateStudent($nis, $nama, $tempat,$tanggal_lahir,$agama,$saudara,$alamat,$nama_ayah,
         $pekerjaan_ayah,$telepon_ayah,$nama_ibu,$pekerjaan_ibu,$telepon_ibu,$kk,$akte,$image){
+        $id = htmlspecialchars($_POST["id_pendaftaran"]) ? htmlentities($_POST["id_pendaftaran"]) : $_POST["id_pendaftaran"];
         $nis = htmlspecialchars($_POST["nis"]) ? htmlentities($_POST["nis"]) : $_POST["nis"];
         $nama = htmlspecialchars($_POST["nama_lengkap"]) ? htmlentities($_POST["nama_lengkap"]) : $_POST["nama_lengkap"];
         $tempat = htmlspecialchars($_POST["tempat_lahir"]) ? htmlentities($_POST["tempat_lahir"]) : $_POST["tempat_lahir"];
@@ -343,6 +344,8 @@ class Pendaftaran {
         $ab = array($nis, $nama, $tempat,$tanggal_lahir,$agama,$saudara,$alamat,$nama_ayah,
         $pekerjaan_ayah,$telepon_ayah,$nama_ibu,$pekerjaan_ibu,$telepon_ibu,$kk,$akte,$image);
         $row->execute($ab);
+        
+        $this->db->prepare("INSERT INTO tb_siswa SET id_siswa = ?, id_kelas = '1', selesai='yes'")->execute(array($id));
 
         if(in_array($ekstensi_kk, $ekstensi_diperbolehkan_kk) === true){
             if($ukuran_kk < 10440070){
