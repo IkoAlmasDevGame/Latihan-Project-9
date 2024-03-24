@@ -296,7 +296,7 @@ class Pendaftaran {
 
     public function CreateStudent($nis, $nama, $tempat,$tanggal_lahir,$agama,$saudara,$alamat,$nama_ayah,
         $pekerjaan_ayah,$telepon_ayah,$nama_ibu,$pekerjaan_ibu,$telepon_ibu,$kk,$akte,$image){
-        $id = htmlspecialchars($_POST["id_pendaftaran"]) ? htmlentities($_POST["id_pendaftaran"]) : $_POST["id_pendaftaran"];
+        $id = htmlspecialchars($_POST["id_siswa"]) ? htmlentities($_POST["id_siswa"]) : $_POST["id_siswa"];
         $nis = htmlspecialchars($_POST["nis"]) ? htmlentities($_POST["nis"]) : $_POST["nis"];
         $nama = htmlspecialchars($_POST["nama_lengkap"]) ? htmlentities($_POST["nama_lengkap"]) : $_POST["nama_lengkap"];
         $tempat = htmlspecialchars($_POST["tempat_lahir"]) ? htmlentities($_POST["tempat_lahir"]) : $_POST["tempat_lahir"];
@@ -378,7 +378,7 @@ class Pendaftaran {
 
     public function EditStudent($nis, $nama, $tempat,$tanggal_lahir,$agama,$saudara,$alamat,$nama_ayah,
         $pekerjaan_ayah,$telepon_ayah,$nama_ibu,$pekerjaan_ibu,$telepon_ibu,$kk,$akte,$image,$id){
-        $id = htmlspecialchars($_POST["id_pendaftaran"]) ? htmlentities($_POST["id_pendaftaran"]) : $_POST["id_pendaftaran"];
+        $id = htmlspecialchars($_POST["id_siswa"]) ? htmlentities($_POST["id_siswa"]) : $_POST["id_siswa"];
         $nis = htmlspecialchars($_POST["nis"]) ? htmlentities($_POST["nis"]) : $_POST["nis"];
         $nama = htmlspecialchars($_POST["nama_lengkap"]) ? htmlentities($_POST["nama_lengkap"]) : $_POST["nama_lengkap"];
         $tempat = htmlspecialchars($_POST["tempat_lahir"]) ? htmlentities($_POST["tempat_lahir"]) : $_POST["tempat_lahir"];
@@ -421,7 +421,7 @@ class Pendaftaran {
         $tanggal_lahir = $tanggal."-".$bulan."-".$tahun;
 
         $table = "tb_pendaftaran";
-        $sql = "UPDATE $table SET nis = ?, nama_lengkap = ?, tempat_lahir = ?, tanggal_lahir = ?, agama = ?, jumlah_saudara = ?, alamat = ?, nama_ayah = ?, pekerjaan_ayah = ?, telepon_ayah = ?, nama_ibu = ?, pekerjaan_ibu = ?, telepon_ibu = ?, file_kk = ?, file_akte = ?, file_image = ? WHERE id_pendaftaran = ?";
+        $sql = "UPDATE $table SET nis = ?, nama_lengkap = ?, tempat_lahir = ?, tanggal_lahir = ?, agama = ?, jumlah_saudara = ?, alamat = ?, nama_ayah = ?, pekerjaan_ayah = ?, telepon_ayah = ?, nama_ibu = ?, pekerjaan_ibu = ?, telepon_ibu = ?, file_kk = ?, file_akte = ?, file_image = ? WHERE id_siswa = ?";
         $row = $this->db->prepare($sql);
         $ab = array($nis, $nama, $tempat,$tanggal_lahir,$agama,$saudara,$alamat,$nama_ayah,
         $pekerjaan_ayah,$telepon_ayah,$nama_ibu,$pekerjaan_ibu,$telepon_ibu,$kk,$akte,$image,$id);
@@ -503,7 +503,7 @@ class Siswa {
 
     public function ReadStudent(){
         $table = "tb_pendaftaran";
-        $sql = "SELECT * FROM $table ORDER BY id_pendaftaran ASC";
+        $sql = "SELECT * FROM $table ORDER BY id_siswa ASC";
         $row = $this->db->prepare($sql);
         $row->execute();
         return $row;

@@ -202,7 +202,7 @@ class ViewPendaftaran {
     }
 
     public function StudentEdit(){
-        $id = htmlspecialchars($_POST["id_pendaftaran"]) ? htmlentities($_POST["id_pendaftaran"]) : $_POST["id_pendaftaran"];
+        $id = htmlspecialchars($_POST["id_siswa"]) ? htmlentities($_POST["id_siswa"]) : $_POST["id_siswa"];
         $nis = htmlspecialchars($_POST["nis"]) ? htmlentities($_POST["nis"]) : $_POST["nis"];
         $nama = htmlspecialchars($_POST["nama_lengkap"]) ? htmlentities($_POST["nama_lengkap"]) : $_POST["nama_lengkap"];
         $tempat = htmlspecialchars($_POST["tempat_lahir"]) ? htmlentities($_POST["tempat_lahir"]) : $_POST["tempat_lahir"];
