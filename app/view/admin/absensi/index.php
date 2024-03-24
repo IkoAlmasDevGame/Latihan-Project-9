@@ -175,7 +175,82 @@
                             <?php
                                 }
                             }else{
-                                http_response_code(404);
+                            ?>
+                            <div class="input-group">
+                                <div class="input-group-addon form-control">
+                                    <form method="post">
+                                        <select name="id_kelas" class="select form-control" required type="submit"
+                                            onchange="this.form.submit(this);">
+                                            <option value="">Pilih Kelas</option>
+                                            <?php 
+                                                $get_kelas = $configs->prepare("SELECT * FROM tb_kelas ORDER BY id_kelas asc");
+                                                $get_kelas->execute();
+                                                $get = $get_kelas->fetchAll();
+                                                foreach ($get as $iKelas) {
+                                            ?>
+                                            <option value="<?=$iKelas['id_kelas']?>"><?php echo $iKelas['namakelas'] ?>
+                                            </option>
+                                            <?php
+                                            }
+                                        ?>
+                                        </select>
+                                    </form>
+                                </div>
+                            </div>
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="fst-normal text-center fw-lighter">No</th>
+                                        <th class="fst-normal text-start fw-lighter">Nama Pelajar</th>
+                                        <th class="fst-normal text-center fw-lighter">Kelas Pelajar</th>
+                                        <th class="fst-normal text-center fw-lighter">Hadir (H)</th>
+                                        <th class="fst-normal text-center fw-lighter">Sakit (S)</th>
+                                        <th class="fst-normal text-center fw-lighter">Ijin (I)</th>
+                                        <th class="fst-normal text-center fw-lighter">Alfa (A)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php 
+                                        $id_kelas = htmlspecialchars($_POST['id_kelas']) ? htmlentities($_POST["id_kelas"]) : $_POST["id_kelas"];
+                                        $sql = "SELECT tb_absensi.*, tb_pendaftaran.id_siswa, tb_pendaftaran.nama_lengkap, tb_siswa.id_siswa, tb_siswa.id_kelas, tb_kelas.id_kelas FROM tb_absensi inner join tb_siswa on tb_absensi.id_kelas = tb_siswa.id_kelas inner join tb_pendaftaran on tb_absensi.id_siswa = tb_pendaftaran.id_siswa inner join tb_kelas on tb_siswa.id_kelas = tb_kelas.id_kelas WHERE tb_absensi.id_kelas = ? ";
+                                        $row = $configs->prepare($sql);
+                                        $row->execute(array($id_kelas));
+                                        $ii = $row->fetchAll();
+                                        $no = 1;
+                                        $nama = $_SESSION['nama_pengguna'];
+                                        foreach ($ii as $i) {
+                                            $hadir = $configs->prepare("SELECT count(keterangan[h]) as hadir FROM tb_absensi WHERE keterangan = 'h'");
+                                            $hadir->execute();
+                                            $h = $hadir->fetch();
+
+                                            $sakit = $configs->prepare("SELECT count(keterangan[s]) as sakit FROM tb_absensi WHERE keterangan = 's'");
+                                            $sakit->execute();
+                                            $s = $sakit->fetch();
+                                            
+                                            $izin = $configs->prepare("SELECT count(keterangan[i]) as izin FROM tb_absensi WHERE keterangan = 'i'");
+                                            $izin->execute();
+                                            $i = $izin->fetch();
+
+                                            $alfa = $configs->prepare("SELECT count(keterangan[a]) as alfa FROM tb_absensi WHERE keterangan = 'a'");
+                                            $alfa->execute();
+                                            $a = $alfa->fetch();
+                                    ?>
+                                    <tr>
+                                        <td><?php echo $no; ?></td>
+                                        <td><?php echo $i['nama_lengkap']; ?></td>
+                                        <td><?php echo $i['namakelas']; ?></td>
+                                        <td align="center"><?php echo number_format($h['hadir']) ?></td>
+                                        <td align="center"><?php echo number_format($s['sakit']) ?></td>
+                                        <td align="center"><?php echo number_format($i['izin']) ?></td>
+                                        <td align="center"><?php echo number_format($a['alfa']) ?></td>
+                                    </tr>
+                                    <?php
+                                    $no++;
+                                        }
+                                    ?>
+                                </tbody>
+                            </table>
+                            <?php
                             }
                             ?>
                         </div>
