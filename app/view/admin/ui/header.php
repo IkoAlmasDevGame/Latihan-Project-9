@@ -169,6 +169,9 @@
                     case 'hapus-jadwal-jam':
                         $viewJadwal->JadwalHapus();
                         break;
+                    case 'tambah-jadwal-mapel':
+                        $viewJadwal->SubjectJadwal();
+                        break;
                     /* Jadwal Akhir */
 
                     /* Pelajaran */
@@ -182,6 +185,12 @@
                         $viewPelajaran->SubjectHapus();
                         break;
                     /* Pelajaran Akhir*/  
+
+                    /* Absensi */
+                    case 'input-absensi':
+                        $viewAbsensi->inputAbsensi();
+                        break;
+                    /* Absensi Akhir */
 
                     default:
                         require_once("../dashboard/index.php");

@@ -58,7 +58,8 @@
                                             aria-current="page" class="btn btn-info hover">
                                             <i class="fas fa-book" title="Tambah Mata Pelajaran"></i>
                                         </a>
-                                        <a href="" aria-current="page" class="btn btn-warning hover">
+                                        <a href="?page=absensi&nama=<?=$_SESSION['nama_pengguna']?>&id_kelas=<?=$isi['id_kelas']?>"
+                                            aria-current="page" class="btn btn-warning hover">
                                             <i class="fas fa-pen-alt" title="Absensi Siswa/i"></i>
                                         </a>
                                     </td>

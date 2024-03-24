@@ -75,6 +75,54 @@ class Absensi {
     {
         $this->db = $db;
     }
+
+    public function createInputAbsensi($kd_kelas,$tanggal){
+        $kd_kelas = htmlspecialchars($_POST["id_kelas"]) ? htmlentities($_POST["id_kelas"]) : $_POST['id_kelas'];
+        $tanggal = htmlspecialchars($_POST["tanggal"]) ? htmlentities($_POST["tanggal"]) : $_POST['tanggal'];
+
+        if(isset($_POST["selesai"])){
+            if(!empty($_POST["hadir"])){
+                $kd_siswa = htmlspecialchars($_POST['hadir']) ? htmlentities($_POST['hadir']): $_POST['hadir'];
+                $jumlah = count($kd_siswa);
+                for($i = 0; $i < $jumlah; $i++){
+                    $row = $this->db->prepare("INSERT INTO tb_absensi (id_siswa,id_kelas,keterangan,tanggal,selesai)
+                     VALUES ('$kd_siswa[$i]','$kd_kelas','h','$tanggal','yes')");
+                    $row->execute();
+                }
+            }
+            if(!empty($_POST["sakit"])){
+                $kd_siswa = htmlspecialchars($_POST['sakit']) ? htmlentities($_POST['sakit']): $_POST['sakit'];
+                $jumlah = count($kd_siswa);
+                for($i = 0; $i < $jumlah; $i++){
+                    $row = $this->db->prepare("INSERT INTO tb_absensi (id_siswa,id_kelas,keterangan,tanggal,selesai)
+                     VALUES ('$kd_siswa[$i]','$kd_kelas','s','$tanggal','yes')");
+                    $row->execute();
+                }
+            }
+            if(!empty($_POST["ijin"])){
+                $kd_siswa = htmlspecialchars($_POST['ijin']) ? htmlentities($_POST['ijin']): $_POST['ijin'];
+                $jumlah = count($kd_siswa);
+                for($i = 0; $i < $jumlah; $i++){
+                    $row = $this->db->prepare("INSERT INTO tb_absensi (id_siswa,id_kelas,keterangan,tanggal,selesai)
+                     VALUES ('$kd_siswa[$i]','$kd_kelas','i','$tanggal','yes')");
+                    $row->execute();
+                }
+            }
+            if(!empty($_POST["alfa"])){
+                $kd_siswa = htmlspecialchars($_POST['alfa']) ? htmlentities($_POST['alfa']): $_POST['alfa'];
+                $jumlah = count($kd_siswa);
+                for($i = 0; $i < $jumlah; $i++){
+                    $row = $this->db->prepare("INSERT INTO tb_absensi (id_siswa,id_kelas,keterangan,tanggal,selesai)
+                     VALUES ('$kd_siswa[$i]','$kd_kelas','a','$tanggal','yes')");
+                    $row->execute();
+                }
+            }
+        }else{
+            unset($_POST["selesai"]);
+            $nama = $_SESSION["nama_pengguna"];
+            echo "<script lang='javascript'>location.href='../ui/header.php?page=absensi&nama=$nama&id_kelas=$kd_kelas';</script>";
+        }
+    }
 }
 
 // 3
@@ -519,6 +567,49 @@ class Jadwal {
         $row = $this->db->prepare($sql);
         $row->execute(array($id));
         return $row;
+    }
+
+    public function SubJadwal($id_jadwal,$id_guru,$id_kelas,$id_jam,$id_pelajaran,$hari){
+        $id_jadwal = htmlspecialchars($_POST["id_jadwal"]) ? htmlentities($_POST["id_jadwal"]) : $_POST["id_jadwal"];
+        $id_guru = htmlspecialchars($_POST["id_guru"]) ? htmlentities($_POST["id_guru"]) : $_POST["id_guru"];
+        $id_kelas = htmlspecialchars($_POST["id_kelas"]) ? htmlentities($_POST["id_kelas"]) : $_POST["id_kelas"];
+        $id_jam = htmlspecialchars($_POST["id_jam"]) ? htmlentities($_POST["id_jam"]) : $_POST["id_jam"];
+        $id_pelajaran = htmlspecialchars($_POST["id_pelajaran"]) ? htmlentities($_POST["id_pelajaran"]) : $_POST["id_pelajaran"];
+        $hari = htmlspecialchars($_POST["hari"]) ? htmlentities($_POST["hari"]) : $_POST["hari"];
+
+        if(empty($id_guru)){
+            $sql = "SELECT count(*) as total from tb_jadwal where id_jadwal = ?";
+            $select = $this->db->prepare($sql);
+            $select->execute(array($id_jadwal));
+            $tHasil = $select->fetch();
+            
+            if($tHasil['total'] > 0){
+                $row = $this->db->prepare("UPDATE tb_jadwal SET id_pelajaran = ?, id_jam = ?, hari = ? where id_jadwal = ?");
+                $row->execute(array($id_pelajaran,$id_jam,$hari,$id_jadwal));
+            }else{
+                $row = $this->db->prepare("INSERT INTO tb_jadwal (id_pelajaran,id_jam,hari,id_kelas) VALUES (?,?,?,?)");
+                $row->execute(array($id_pelajaran,$id_jam,$hari,$id_kelas));
+            }
+        }else{
+            if(empty($id_jadwal)){
+                $_SESSION["gagal"] = "isi terlebih dahulu mata pelajaran";
+            }else{
+                $sql_2 = "SELECT COUNT(*) as total FROM tb_jawdal inner join tb_kelas on tb_kelas.id_kelas = tb_jadwal.id_kelas where id_guru = ? && id_jam = ? && hari = ?";
+                $select_2 = $this->db->prepare($sql_2);
+                $select_2->execute(array($id_guru,$id_jam,$hari));
+                $tHasili = $select_2->fetch();
+
+                if($tHasili['total'] > 0){
+                    $get_data = $this->db->prepare("SELECT COUNT(*) as total FROM tb_jawdal inner join tb_kelas on tb_kelas.id_kelas = tb_jadwal.id_kelas where id_guru = ? && id_jam = ? && hari = ?");
+                    $get_data->execute(array($id_guru,$id_jam,$hari));
+                    $cek_data = $get_data->fetch();
+                    $_SESSION["gagal"] = 'Guru Sudah Mengisi di Kelas '.$cek_data['namakelas'];
+                }else{
+                    $row = $this->db->prepare("UPDATE tb_jadwal SET id_guru = ? WHERE id_jadwal = ?");
+                    $row->execute(array($id_guru,$id_jadwal));
+                }
+            }
+        }   
     }
 }
 

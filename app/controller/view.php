@@ -31,6 +31,15 @@ class ViewAbsensi {
     {
         $this->konfig = new Absensi($db);
     }
+
+    public function inputAbsensi(){
+        $kd_kelas = htmlspecialchars($_POST["id_kelas"]) ? htmlentities($_POST["id_kelas"]) : $_POST['id_kelas'];
+        $tanggal = htmlspecialchars($_POST["tanggal"]) ? htmlentities($_POST["tanggal"]) : $_POST['tanggal'];
+        $this->konfig->createInputAbsensi($kd_kelas,$tanggal);
+        $nama = $_SESSION["nama_pengguna"];
+        echo "<script lang='javascript'>location.href='../ui/header.php?page=absensi&nama=$nama&id_kelas=$kd_kelas';</script>";
+
+    }
 }
 
 use model\Guru;
@@ -305,6 +314,19 @@ class ViewJadwal {
         $row = $this->konfig->PilihEditJadwal($id);
         $hasil = $row->fetch();
         return $hasil;
+    }
+
+    public function SubjectJadwal(){
+        session_start();
+        $id_jadwal = htmlspecialchars($_POST["id_jadwal"]) ? htmlentities($_POST["id_jadwal"]) : $_POST["id_jadwal"];
+        $id_guru = htmlspecialchars($_POST["id_guru"]) ? htmlentities($_POST["id_guru"]) : $_POST["id_guru"];
+        $id_kelas = htmlspecialchars($_POST["id_kelas"]) ? htmlentities($_POST["id_kelas"]) : $_POST["id_kelas"];
+        $id_jam = htmlspecialchars($_POST["id_jam"]) ? htmlentities($_POST["id_jam"]) : $_POST["id_jam"];
+        $id_pelajaran = htmlspecialchars($_POST["id_pelajaran"]) ? htmlentities($_POST["id_pelajaran"]) : $_POST["id_pelajaran"];
+        $hari = htmlspecialchars($_POST["hari"]) ? htmlentities($_POST["hari"]) : $_POST["hari"];
+        $this->konfig->SubJadwal($id_jadwal,$id_guru,$id_kelas,$id_jam,$id_pelajaran,$hari);
+        $nama = $_SESSION['nama_pengguna'];
+        echo "<script lang='javascript'>location.href='../ui/header.php?page=kelas&nama=$nama'</script>";
     }
 }
 

@@ -132,7 +132,8 @@
                                                 }
                                             ?>
                                         <td>
-                                            <form action="" id="form_id_<?=$j."_".$isi['id_jam']?>" method="post">
+                                            <form action="?act=tambah-jadwal-mapel"
+                                                id="form_id_<?=$j."_".$isi['id_jam']?>" method="post">
                                                 <input type="hidden" name="id_kelas" value="<?=$iHasil['id_kelas']?>">
                                                 <input type="hidden" name="hari" value="<?=$hari;?>">
                                                 <input type="hidden" name="id_jam" value="<?=$isi['id_jam']?>">
@@ -166,12 +167,44 @@
                                                     ?>
                                                 </select>
                                             </form>
-                                            <form action="" id="form_id_2_<?=$j."_".$isi['id_jam']?>" method="post">
+                                            <form action="?act=tambah-jadwal-mapel"
+                                                id="form_id_2_<?=$j."_".$isi['id_jam']?>" method="post">
                                                 <?php 
                                                     $id_kelas = $iHasil['id_kelas'];
                                                     $id_jam = $isi['id_jam'];
-
+                                                    $sql_guru = "select * from tb_jadwal where id_jam='$id_jam' && id_kelas='$id_kelas' && hari='$hari'";
+                                                    $row = $configs->prepare($sql_guru);
+                                                    $row->execute();
+                                                    $iHi = $row->fetch();
+                                                    $rows = $_SESSION["guru"] = $iHi['id_guru'];
                                                 ?>
+                                                <input type="hidden" name="id_kelas" value="<?=$iHasil['id_kelas']?>">
+                                                <input type="hidden" name="hari" value="<?=$hari;?>">
+                                                <input type="hidden" name="id_jam" value="<?=$isi['id_jam']?>">
+                                                <input type="hidden" name="id_jadwal" value="<?=$ii['id_jadwal']?>">
+                                                <?php 
+                                                    $get_guru = $configs->prepare("select * from tb_guru where id_guru = '$rows'");
+                                                    $get_guru->execute();
+                                                    $guru_tooltip = $get_guru->fetch();
+                                                ?>
+                                                <select name="id_guru" class="form-control select" data-toggle="tooltip"
+                                                    data-placement="top" title="<?=$guru_tooltip['nama']?>"
+                                                    type="submit"
+                                                    onchange="document.getElementById('form_id_2_<?=$j.'_'.$isi['id_jam']; ?>').submit();">
+                                                    <option>Pilih Guru</option>
+                                                    <?php 
+                                                        $dataGuru = $configs->prepare("SELECT * FROM tb_guru");
+                                                        $dataGuru->execute();
+                                                        $hasili = $dataGuru->fetchAll();
+                                                    foreach($hasili as $h){
+                                                        ?>
+                                                    <option value="<?=$h['id_guru']?>"
+                                                        <?php if($ii['id_guru'] == $h['id_guru']){ echo "selected"; } ?>>
+                                                        <?=$h['nama']?></option>
+                                                    <?php
+                                                        }
+                                                    ?>
+                                                </select>
                                             </form>
                                         </td>
                                         <?php
