@@ -39,10 +39,6 @@ if($_SESSION["user_level"] == "Admin"){
                                 aria-current="page">Jadwal</a>
                         </li>
                         <li class="nav-item">
-                            <a href="?page=absensi&nama=<?=$_SESSION["nama_pengguna"]?>" class="nav-link hover"
-                                aria-current="page">Absensi</a>
-                        </li>
-                        <li class="nav-item">
                             <a href="?page=kelas&nama=<?=$_SESSION["nama_pengguna"]?>" class="nav-link hover"
                                 aria-current="page">Kelas</a>
                         </li>

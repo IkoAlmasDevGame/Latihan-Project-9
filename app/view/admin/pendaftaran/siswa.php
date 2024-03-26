@@ -122,6 +122,16 @@
                                         <td colspan="3">
                                             <select name="agama" aria-required="true" required class="form-control">
                                                 <option value="">Pilih Agama</option>
+                                                <?php 
+                                                $agama = array("Hindu","Budha","Kristen","Katholik","Islam","Konghucu");
+                                                $jlh_agama = count($agama);
+                                                $agm = array('01', '02', '03', '04', '05', '06');
+                                                for ($c = 0; $c < $jlh_agama; $c += 1) { 
+                                                ?>
+                                                <option value="<?=$agm[$c];?>"><?=$agama[$c]?></option>
+                                                <?php
+                                                    }
+                                                ?>
                                             </select>
                                         </td>
                                         <td colspan="1" class="fw-lighter fst-normal fs-6">Jumlah Saudara</td>
@@ -149,10 +159,8 @@
                                         </td>
                                         <td colspan="1" class="fw-lighter fst-normal fs-6">Pekerjaan Ayah Kandung</td>
                                         <td colspan="2">
-                                            <select name="pekerjaan_ayah" class=" form-control" aria-required="true"
-                                                required>
-                                                <option value="">Pilih Pekerjaan Ayah Kandung</option>
-                                            </select>
+                                            <input type="text" name="pekerjaan_ayah" required
+                                                placeholder="Pekerjaan Ayah Kandung" class="form-control">
                                         </td>
                                         <td colspan="1" class="fw-lighter fst-normal fs-6">No Telepon Ayah</td>
                                         <td colspan="2">
@@ -168,10 +176,8 @@
                                         </td>
                                         <td colspan="1" class="fw-lighter fst-normal fs-6">Pekerjaan Ibu Kandung</td>
                                         <td colspan="2">
-                                            <select name="pekerjaan_ibu" class=" form-control" aria-required="true"
-                                                required>
-                                                <option value="">Pilih Pekerjaan Ibu Kandung</option>
-                                            </select>
+                                            <input type="text" name="pekerjaan_ibu" required
+                                                placeholder="Pekerjaan ibu Kandung" class="form-control">
                                         </td>
                                         <td colspan="1" class="fw-lighter fst-normal fs-6">No Telepon Ibu</td>
                                         <td colspan="2">

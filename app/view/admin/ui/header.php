@@ -44,7 +44,7 @@
                         }
                         header("location:../auth/index.php");
                         exit(0);
-                    break; 
+                    break;
                     
                     default:
                         require_once("../dashboard/index.php");
@@ -154,8 +154,17 @@
                     case 'tambah-siswa-baru':
                         $viewPendaftaran->StudentCreated();
                         break;
+
                     case 'edit-siswa-baru':
                         $viewPendaftaran->StudentEdit();
+                        break;
+
+                    case 'hapus':
+                        $viewPendaftaran->StudentHapus();
+                    break;
+
+                    case 'create-data':
+                        $viewSiswa->create();
                         break;
                     /* Pendaftaran akhir */ 
 
@@ -209,6 +218,11 @@
                         $viewMessage->delete();
                     break;
                     /* Pesan Akhir */ 
+
+                    /* Pembayaran */
+                    case 'get-pembayaran':
+                        $viewPembayaran->pembayaran();
+                        break; 
 
                     default:
                         require_once("../dashboard/index.php");

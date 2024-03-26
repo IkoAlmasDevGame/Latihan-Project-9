@@ -175,7 +175,7 @@ class Guru {
 
     public function DeleteTeacher($id){
         $table = "tb_guru";
-        $id = htmlspecialchars($_POST["id_guru"]) ? htmlentities($_POST["id_guru"]) : $_POST["id_guru"];
+        $id = htmlspecialchars($_GET["id_guru"]) ? htmlentities($_GET["id_guru"]) : $_GET["id_guru"];
 
         /* Hapus Teacher Database */ 
         $sql = "DELETE FROM $table WHERE id_guru = ?";
@@ -283,6 +283,18 @@ class Pembayaran {
     {
         $this->db = $db;
     }
+
+    public function GetPembayaran($id_kelas){
+        $id_kelas = htmlspecialchars($_POST["id_kelas"]) ? htmlentities($_POST["id_kelas"]) : $_POST["id_kelas"];
+        $sql = "SELECT tb_siswa.*, tb_kelas.id_kelas, tb_kelas.namakelas, tb_pendaftaran.id_siswa, tb_pendaftaran.nama_lengkap FROM tb_siswa inner join tb_kelas on tb_siswa.id_kelas = tb_kelas.id_kelas inner join tb_pendaftaran on tb_siswa.id_siswa = tb_pendaftaran.id_siswa WHERE tb_siswa.id_kelas = ?";
+        $row = $this->db->prepare($sql);
+        $row->execute(array($id_kelas));
+        return $row;
+    }
+    
+    public function pembayaranSiswa(){
+        
+    }
 }
 
 // 7
@@ -296,7 +308,6 @@ class Pendaftaran {
 
     public function CreateStudent($nis, $nama, $tempat,$tanggal_lahir,$agama,$saudara,$alamat,$nama_ayah,
         $pekerjaan_ayah,$telepon_ayah,$nama_ibu,$pekerjaan_ibu,$telepon_ibu,$kk,$akte,$image){
-        $id = htmlspecialchars($_POST["id_siswa"]) ? htmlentities($_POST["id_siswa"]) : $_POST["id_siswa"];
         $nis = htmlspecialchars($_POST["nis"]) ? htmlentities($_POST["nis"]) : $_POST["nis"];
         $nama = htmlspecialchars($_POST["nama_lengkap"]) ? htmlentities($_POST["nama_lengkap"]) : $_POST["nama_lengkap"];
         $tempat = htmlspecialchars($_POST["tempat_lahir"]) ? htmlentities($_POST["tempat_lahir"]) : $_POST["tempat_lahir"];
@@ -315,26 +326,11 @@ class Pendaftaran {
         $telepon_ibu = htmlspecialchars($_POST["telepon_ibu"]) ? htmlentities($_POST["telepon_ibu"]) : $_POST["telepon_ibu"];
         /* Data Document */
         /* File Kartu Keluarga */
-        $ekstensi_diperbolehkan_kk = array('pdf');
         $kk = htmlspecialchars($_FILES["file_kk"]["name"]);
-        $x_kk = explode('.', $kk);
-        $ekstensi_kk = strtolower(end($x_kk));
-        $ukuran_kk = $_FILES['file_kk']['size'];
-        $file_tmp_kk = $_FILES['file_kk']['tmp_name'];
         /* File Akte Lahir */
-        $ekstensi_diperbolehkan_akte = array('pdf');
         $akte = htmlspecialchars($_FILES["file_akte"]["name"]);
-        $x_akte = explode('.', $akte);
-        $ekstensi_akte = strtolower(end($x_akte));
-        $ukuran_akte = $_FILES['file_akte']['size'];
-        $file_tmp_akte = $_FILES['file_akte']['tmp_name'];
         /* File Photo */
-        $ekstensi_diperbolehkan_foto = array('png', 'jpg', 'jpeg', 'jfif');
         $image = htmlspecialchars($_FILES["file_image"]["name"]);
-        $x_foto = explode('.', $image);
-        $ekstensi_foto = strtolower(end($x_foto));
-        $ukuran_foto = $_FILES['file_image']['size'];
-        $file_tmp_foto = $_FILES['file_image']['tmp_name'];
 
         $tanggal_lahir = $tanggal."-".$bulan."-".$tahun;
 
@@ -344,36 +340,15 @@ class Pendaftaran {
         $ab = array($nis, $nama, $tempat,$tanggal_lahir,$agama,$saudara,$alamat,$nama_ayah,
         $pekerjaan_ayah,$telepon_ayah,$nama_ibu,$pekerjaan_ibu,$telepon_ibu,$kk,$akte,$image);
         $row->execute($ab);
-        
-        $this->db->prepare("INSERT INTO tb_siswa SET id_siswa = ?, id_kelas = '1', selesai='yes'")->execute(array($id));
 
-        if(in_array($ekstensi_kk, $ekstensi_diperbolehkan_kk) === true){
-            if($ukuran_kk < 10440070){
-                move_uploaded_file($file_tmp_kk, "../../../../assets/document/" . $kk);
-                if(in_array($ekstensi_akte, $ekstensi_diperbolehkan_akte) === true){
-                    if($ukuran_akte < 10440070){
-                        move_uploaded_file($file_tmp_akte, "../../../../assets/document/" . $akte);                    
-                        if(in_array($ekstensi_foto, $ekstensi_diperbolehkan_foto) === true){
-                            if($ukuran_foto < 10440070){
-                                move_uploaded_file($file_tmp_foto, "../../../../assets/image/" . $image);
-                            }else{
-                                echo "GAGAL MENGUPLOAD FILE FOTO";
-                            }
-                        }else{
-                            echo "EKSTENSI FILE YANG DI UPLOAD TIDAK DI PERBOLEHKAN";
-                        }
-                    }else{
-                        echo "GAGAL MENGUPLOAD FILE FOTO";
-                    }
-                }else{
-                    echo "EKSTENSI FILE YANG DI UPLOAD TIDAK DI PERBOLEHKAN";
-                }
-            }else{
-                echo "GAGAL MENGUPLOAD FILE FOTO";
-            }
-        }else{
-            echo "EKSTENSI FILE YANG DI UPLOAD TIDAK DI PERBOLEHKAN";
-        }
+        $email = $nis."@sekolah.com";
+        $password = $tanggal."-".$bulan."-".$tahun;
+        $user_level = "Siswa";
+        $created_at = Date('Y-m-d H:i:s a');
+        $created_end = Date('Y-m-d H:i:s a');
+        $this->db->prepare("INSERT INTO tb_pengguna (nis,email,password,nama,user_level,created_At,create_end)
+         VALUES (?,?,?,?,?,?,?)")->execute(array($nis, $email, $password, $nama,$user_level, $created_at, $created_end));
+        return $row;
     }
 
     public function EditStudent($nis, $nama, $tempat,$tanggal_lahir,$agama,$saudara,$alamat,$nama_ayah,
@@ -397,26 +372,11 @@ class Pendaftaran {
         $telepon_ibu = htmlspecialchars($_POST["telepon_ibu"]) ? htmlentities($_POST["telepon_ibu"]) : $_POST["telepon_ibu"];
         /* Data Document */
         /* File Kartu Keluarga */
-        $ekstensi_diperbolehkan_kk = array('pdf');
         $kk = htmlspecialchars($_FILES["file_kk"]["name"]);
-        $x_kk = explode('.', $kk);
-        $ekstensi_kk = strtolower(end($x_kk));
-        $ukuran_kk = $_FILES['file_kk']['size'];
-        $file_tmp_kk = $_FILES['file_kk']['tmp_name'];
         /* File Akte Lahir */
-        $ekstensi_diperbolehkan_akte = array('pdf');
         $akte = htmlspecialchars($_FILES["file_akte"]["name"]);
-        $x_akte = explode('.', $akte);
-        $ekstensi_akte = strtolower(end($x_akte));
-        $ukuran_akte = $_FILES['file_akte']['size'];
-        $file_tmp_akte = $_FILES['file_akte']['tmp_name'];
         /* File Photo */
-        $ekstensi_diperbolehkan_foto = array('png', 'jpg', 'jpeg', 'jfif');
         $image = htmlspecialchars($_FILES["file_image"]["name"]);
-        $x_foto = explode('.', $image);
-        $ekstensi_foto = strtolower(end($x_foto));
-        $ukuran_foto = $_FILES['file_image']['size'];
-        $file_tmp_foto = $_FILES['file_image']['tmp_name'];
 
         $tanggal_lahir = $tanggal."-".$bulan."-".$tahun;
 
@@ -426,42 +386,34 @@ class Pendaftaran {
         $ab = array($nis, $nama, $tempat,$tanggal_lahir,$agama,$saudara,$alamat,$nama_ayah,
         $pekerjaan_ayah,$telepon_ayah,$nama_ibu,$pekerjaan_ibu,$telepon_ibu,$kk,$akte,$image,$id);
         $row->execute($ab);
-
-        if(in_array($ekstensi_kk, $ekstensi_diperbolehkan_kk) === true){
-            if($ukuran_kk < 10440070){
-                move_uploaded_file($file_tmp_kk, "../../../../assets/document/" . $kk);
-                if(in_array($ekstensi_akte, $ekstensi_diperbolehkan_akte) === true){
-                    if($ukuran_akte < 10440070){
-                        move_uploaded_file($file_tmp_akte, "../../../../assets/document/" . $akte);                    
-                        if(in_array($ekstensi_foto, $ekstensi_diperbolehkan_foto) === true){
-                            if($ukuran_foto < 10440070){
-                                move_uploaded_file($file_tmp_foto, "../../../../assets/image/" . $image);
-                            }else{
-                                echo "GAGAL MENGUPLOAD FILE FOTO";
-                            }
-                        }else{
-                            echo "EKSTENSI FILE YANG DI UPLOAD TIDAK DI PERBOLEHKAN";
-                        }
-                    }else{
-                        echo "GAGAL MENGUPLOAD FILE FOTO";
-                    }
-                }else{
-                    echo "EKSTENSI FILE YANG DI UPLOAD TIDAK DI PERBOLEHKAN";
-                }
-            }else{
-                echo "GAGAL MENGUPLOAD FILE FOTO";
-            }
-        }else{
-            echo "EKSTENSI FILE YANG DI UPLOAD TIDAK DI PERBOLEHKAN";
-        }
+        return $row;
     }
 
-    public function DeleteStudent(){
+    public function PilihStudent($id){
+        $table = "tb_pendaftaran";
+        $id = htmlspecialchars($_GET["id_siswa"]) ? htmlentities($_GET["id_siswa"]) : $_GET["id_siswa"];
+        $sql = "SELECT * FROM $table WHERE id_siswa = ?";
+        $row = $this->db->prepare($sql);
+        $row->execute(array($id));
+        return $row;
 
     }
 
-    public function SelectionStudent(){
-        
+    public function DeleteStudent($id){
+        $id = htmlspecialchars($_GET["id_siswa"]) ? htmlentities($_GET["id_siswa"]) : $_GET["id_siswa"];
+        $sql = "SELECT * FROM tb_pendaftaran WHERE id_siswa = ?";
+        $row = $this->db->prepare($sql);
+        $row->execute(array($id));
+        /* Hapus Tembak */ 
+        $iHasil = $row->fetch();
+        $sql_2 = "DELETE FROM tb_pengguna WHERE nis = ?";
+        $sql_3 = "DELETE FROM tb_siswa WHERE id_siswa = ?";
+        $sql_4 = "DELETE FROM tb_pendaftaran WHERE id_siswa = ?";
+        $row = $this->db->prepare($sql_2)->execute(array($iHasil['nis']));
+        $row = $this->db->prepare($sql_3)->execute(array($iHasil['id_siswa']));
+        $row = $this->db->prepare($sql_4)->execute(array($iHasil['id_siswa']));
+        echo "<script type='text/javascript'>location.href='../ui/header.php?page=lihat-siswa&nama=$_SESSION[nama_pengguna]'</script>";
+        return $row;
     }
 }
 
@@ -506,6 +458,16 @@ class Siswa {
         $sql = "SELECT * FROM $table ORDER BY id_siswa ASC";
         $row = $this->db->prepare($sql);
         $row->execute();
+        return $row;
+    }
+
+    public function createData($id_siswa, $id_kelas){
+        $id_siswa = htmlspecialchars($_POST["id_siswa"]) ? htmlentities($_POST["id_siswa"]) : $_POST["id_siswa"];
+        $id_kelas = htmlspecialchars($_POST["id_kelas"]) ? htmlentities($_POST["id_kelas"]) : $_POST["id_kelas"];
+        $table = "tb_siswa";
+        $sql = "INSERT INTO $table (id_siswa,id_kelas) VALUES (?,?)";
+        $row = $this->db->prepare($sql);
+        $row->execute(array($id_siswa,$id_kelas));
         return $row;
     }
 }

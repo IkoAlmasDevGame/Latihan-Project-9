@@ -85,7 +85,7 @@ class ViewGuru {
     }
 
     public function TeacherDelete(){
-        $id = htmlspecialchars($_POST["id_guru"]) ? htmlentities($_POST["id_guru"]) : $_POST["id_guru"];
+        $id = htmlspecialchars($_GET["id_guru"]) ? htmlentities($_GET["id_guru"]) : $_GET["id_guru"];
         $this->konfig->DeleteTeacher($id);
         $nama = $_SESSION['nama_pengguna'];
         echo "<script lang='javascript'>location.href='../ui/header.php?page=guru&nama=$nama'</script>";
@@ -161,6 +161,15 @@ class ViewPembayaran {
     {
         $this->konfig = new Pembayaran($db);
     }
+
+    public function pembayaran(){
+        $id_kelas = htmlspecialchars($_POST["id_kelas"]) ? htmlentities($_POST["id_kelas"]) : $_POST["id_kelas"];
+        $row = $this->konfig->GetPembayaran($id_kelas);
+        $hasil = $row->fetchAll();
+        $nama = $_SESSION['nama_pengguna'];
+        echo "<script lang='javascript'>location.href='../ui/header.php?page=pembayaran&nama=$nama&id_kelas=$id_kelas'</script>";
+        return $hasil;
+    }
 }
 
 use model\Pendaftaran;
@@ -189,16 +198,61 @@ class ViewPendaftaran {
         $nama_ibu = htmlspecialchars($_POST["nama_ibu"]) ? htmlentities($_POST["nama_ibu"]) : $_POST["nama_ibu"];
         $pekerjaan_ibu = htmlspecialchars($_POST["pekerjaan_ibu"]) ? htmlentities($_POST["pekerjaan_ibu"]) : $_POST["pekerjaan_ibu"];
         $telepon_ibu = htmlspecialchars($_POST["telepon_ibu"]) ? htmlentities($_POST["telepon_ibu"]) : $_POST["telepon_ibu"]; 
+        /* Data Document */
         /* File Kartu Keluarga */
+        $ekstensi_diperbolehkan_kk = array('pdf');
         $kk = htmlspecialchars($_FILES["file_kk"]["name"]);
+        $x_kk = explode('.', $kk);
+        $ekstensi_kk = strtolower(end($x_kk));
+        $ukuran_kk = $_FILES['file_kk']['size'];
+        $file_tmp_kk = $_FILES['file_kk']['tmp_name'];
         /* File Akte Lahir */
+        $ekstensi_diperbolehkan_akte = array('pdf');
         $akte = htmlspecialchars($_FILES["file_akte"]["name"]);
+        $x_akte = explode('.', $akte);
+        $ekstensi_akte = strtolower(end($x_akte));
+        $ukuran_akte = $_FILES['file_akte']['size'];
+        $file_tmp_akte = $_FILES['file_akte']['tmp_name'];
         /* File Photo */
+        $ekstensi_diperbolehkan_foto = array('png', 'jpg', 'jpeg', 'jfif');
         $image = htmlspecialchars($_FILES["file_image"]["name"]);
-        $this->konfig->CreateStudent($nis, $nama, $tempat,$tanggal_lahir,$agama,$saudara,$alamat,$nama_ayah,
-        $pekerjaan_ayah,$telepon_ayah,$nama_ibu,$pekerjaan_ibu,$telepon_ibu,$kk,$akte,$image);
+        $x_foto = explode('.', $image);
+        $ekstensi_foto = strtolower(end($x_foto));
+        $ukuran_foto = $_FILES['file_image']['size'];
+        $file_tmp_foto = $_FILES['file_image']['tmp_name'];
+
+        if(in_array($ekstensi_kk, $ekstensi_diperbolehkan_kk) === true){
+            if($ukuran_kk < 10440070){
+                move_uploaded_file($file_tmp_kk, "../../../../assets/document/" . $kk);
+                if(in_array($ekstensi_akte, $ekstensi_diperbolehkan_akte) === true){
+                    if($ukuran_akte < 10440070){
+                        move_uploaded_file($file_tmp_akte, "../../../../assets/document/" . $akte);                    
+                        if(in_array($ekstensi_foto, $ekstensi_diperbolehkan_foto) === true){
+                            if($ukuran_foto < 10440070){
+                                move_uploaded_file($file_tmp_foto, "../../../../assets/image/" . $image);
+                                    $row = $this->konfig->CreateStudent($nis, $nama, $tempat,$tanggal_lahir,$agama,$saudara,$alamat,$nama_ayah,
+                                    $pekerjaan_ayah,$telepon_ayah,$nama_ibu,$pekerjaan_ibu,$telepon_ibu,$kk,$akte,$image);
+                            }else{
+                                echo "GAGAL MENGUPLOAD FILE FOTO";
+                            }
+                        }else{
+                            echo "EKSTENSI FILE YANG DI UPLOAD TIDAK DI PERBOLEHKAN";
+                        }
+                    }else{
+                        echo "GAGAL MENGUPLOAD FILE FOTO";
+                    }
+                }else{
+                    echo "EKSTENSI FILE YANG DI UPLOAD TIDAK DI PERBOLEHKAN";
+                }
+            }else{
+                echo "GAGAL MENGUPLOAD FILE FOTO";
+            }
+        }else{
+            echo "EKSTENSI FILE YANG DI UPLOAD TIDAK DI PERBOLEHKAN";
+        }
         $namas = $_SESSION['nama_pengguna'];
-        echo "<script lang='javascript'>location.href='../ui/header.php?page=list-siswa&nama=$namas&act_seleksi=yes'</script>";
+        echo "<script lang='javascript'>location.href='../ui/header.php?page=lihat-siswa&nama=$namas'</script>";
+        return $row;
     }
 
     public function StudentEdit(){
@@ -220,16 +274,74 @@ class ViewPendaftaran {
         $nama_ibu = htmlspecialchars($_POST["nama_ibu"]) ? htmlentities($_POST["nama_ibu"]) : $_POST["nama_ibu"];
         $pekerjaan_ibu = htmlspecialchars($_POST["pekerjaan_ibu"]) ? htmlentities($_POST["pekerjaan_ibu"]) : $_POST["pekerjaan_ibu"];
         $telepon_ibu = htmlspecialchars($_POST["telepon_ibu"]) ? htmlentities($_POST["telepon_ibu"]) : $_POST["telepon_ibu"]; 
+        /* Data Document */
         /* File Kartu Keluarga */
+        $ekstensi_diperbolehkan_kk = array('pdf');
         $kk = htmlspecialchars($_FILES["file_kk"]["name"]);
+        $x_kk = explode('.', $kk);
+        $ekstensi_kk = strtolower(end($x_kk));
+        $ukuran_kk = $_FILES['file_kk']['size'];
+        $file_tmp_kk = $_FILES['file_kk']['tmp_name'];
         /* File Akte Lahir */
+        $ekstensi_diperbolehkan_akte = array('pdf');
         $akte = htmlspecialchars($_FILES["file_akte"]["name"]);
+        $x_akte = explode('.', $akte);
+        $ekstensi_akte = strtolower(end($x_akte));
+        $ukuran_akte = $_FILES['file_akte']['size'];
+        $file_tmp_akte = $_FILES['file_akte']['tmp_name'];
         /* File Photo */
+        $ekstensi_diperbolehkan_foto = array('png', 'jpg', 'jpeg', 'jfif');
         $image = htmlspecialchars($_FILES["file_image"]["name"]);
-        $this->konfig->EditStudent($nis, $nama, $tempat,$tanggal_lahir,$agama,$saudara,$alamat,$nama_ayah,
-        $pekerjaan_ayah,$telepon_ayah,$nama_ibu,$pekerjaan_ibu,$telepon_ibu,$kk,$akte,$image,$id);
+        $x_foto = explode('.', $image);
+        $ekstensi_foto = strtolower(end($x_foto));
+        $ukuran_foto = $_FILES['file_image']['size'];
+        $file_tmp_foto = $_FILES['file_image']['tmp_name'];
+
+        if(in_array($ekstensi_kk, $ekstensi_diperbolehkan_kk) === true){
+            if($ukuran_kk < 10440070){
+                move_uploaded_file($file_tmp_kk, "../../../../assets/document/" . $kk);
+                if(in_array($ekstensi_akte, $ekstensi_diperbolehkan_akte) === true){
+                    if($ukuran_akte < 10440070){
+                        move_uploaded_file($file_tmp_akte, "../../../../assets/document/" . $akte);                    
+                        if(in_array($ekstensi_foto, $ekstensi_diperbolehkan_foto) === true){
+                            if($ukuran_foto < 10440070){
+                                move_uploaded_file($file_tmp_foto, "../../../../assets/image/" . $image);
+                                $row = $this->konfig->EditStudent($nis, $nama, $tempat,$tanggal_lahir,$agama,$saudara,$alamat,$nama_ayah,$pekerjaan_ayah,$telepon_ayah,$nama_ibu,$pekerjaan_ibu,$telepon_ibu,$kk,$akte,$image,$id);
+                            }else{
+                                echo "GAGAL MENGUPLOAD FILE FOTO";
+                            }
+                        }else{
+                            echo "EKSTENSI FILE YANG DI UPLOAD TIDAK DI PERBOLEHKAN";
+                        }
+                    }else{
+                        echo "GAGAL MENGUPLOAD FILE FOTO";
+                    }
+                }else{
+                    echo "EKSTENSI FILE YANG DI UPLOAD TIDAK DI PERBOLEHKAN";
+                }
+            }else{
+                echo "GAGAL MENGUPLOAD FILE FOTO";
+            }
+        }else{
+            echo "EKSTENSI FILE YANG DI UPLOAD TIDAK DI PERBOLEHKAN";
+        }
         $namas = $_SESSION['nama_pengguna'];
-        echo "<script lang='javascript'>location.href='../ui/header.php?page=list-siswa&nama=$namas'</script>";
+        echo "<script lang='javascript'>location.href='../ui/header.php?page=lihat-siswa&nama=$namas'</script>";
+        return $row;
+    }
+
+    public function StudentPilih($id){
+        $id = htmlspecialchars($_GET["id_siswa"]) ? htmlentities($_GET["id_siswa"]) : $_GET["id_siswa"];
+        $row = $this->konfig->PilihStudent($id);
+        $hasil = $row->fetchAll();
+        return $hasil;
+    }
+
+    public function StudentHapus(){
+        $id = htmlspecialchars($_GET["id_siswa"]) ? htmlentities($_GET["id_siswa"]) : $_GET["id_siswa"];
+        $row = $this->konfig->DeleteStudent($id);
+        $hasil = $row->fetch();
+        return $hasil;
     }
 }
 
@@ -265,8 +377,16 @@ class ViewSiswa {
         $row = $this->konfig->ReadStudent();
         $hasil = $row->fetchAll();
         return $hasil;
-
     }
+
+        public function create(){
+        $id_siswa = htmlspecialchars($_POST["id_siswa"]) ? htmlentities($_POST["id_siswa"]) : $_POST["id_siswa"];
+        $id_kelas = htmlspecialchars($_POST["id_kelas"]) ? htmlentities($_POST["id_kelas"]) : $_POST["id_kelas"];
+        $this->konfig->createData($id_siswa,$id_kelas);
+        $nama = $_SESSION['nama_pengguna'];
+        echo "<script lang='javascript'>location.href='../ui/header.php?page=siswa&nama=$nama'</script>";
+    }
+
 }
 
 use model\Jadwal;

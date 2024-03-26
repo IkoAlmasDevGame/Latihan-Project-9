@@ -7,6 +7,37 @@
         <title>Halaman Pendaftaran</title>
         <?php 
             require_once("../ui/header.php");
+            function agama($agama){
+                switch ($agama) {
+                    case '1':
+                        echo $agama = "Buddha";
+                        break;
+
+                    case '2':
+                        echo $agama = "Hindu";
+                        break;
+
+                    case '3':
+                        echo $agama = "Kristen";
+                        break;
+
+                    case '4':
+                        echo $agama = "Katholik";
+                        break;
+
+                    case '5':
+                        echo $agama = "Islam";
+                        break;
+
+                    case '6':
+                        echo $agama = "Konghucu";
+                        break;
+                    
+                    default:
+                        echo $agama = "Atheis";
+                        break;
+                }
+            }
         ?>
     </head>
 
@@ -42,6 +73,11 @@
                                 <i class="fas fa-user-alt"></i>
                                 <span>Pendaftaran Siswa Baru</span>
                             </a>
+                            <a href="?page=lihat-siswa&nama=<?=$_SESSION["nama_pengguna"]?>&hapus=yes"
+                                aria-current="page" class="btn btn-danger">
+                                <i class="fas fa-trash-alt"></i>
+                                <span>Hapus Siswa Baru</span>
+                            </a>
                         </div>
                         <div class="mb-1"></div>
                         <div class="border border-top border-dark"></div>
@@ -57,7 +93,6 @@
                                             <th class="fw-normal fst-normal">Agama Siswa</th>
                                             <th class="fw-normal fst-normal">Data Orang Tua</th>
                                             <th class="fw-normal fst-normal">Data Document</th>
-                                            <th class="fw-normal fst-normal">Seleksi Siswa</th>
                                             <th class="fw-normal fst-normal">Action List</th>
                                         </tr>
                                     </thead>
@@ -65,14 +100,14 @@
                                         <?php 
                                             $hasil = $viewSiswa->StudentRead();
                                             $no = 1;
-                                            foreach ($hasil as $isi) {
+                                            foreach ($hasil as $isi) { 
                                         ?>
                                         <tr>
                                             <td><?php echo $no; ?></td>
                                             <td><?php echo $isi["nis"]; ?></td>
                                             <td><?php echo $isi["nama_lengkap"]; ?></td>
                                             <td><?php echo $isi["tempat_lahir"].", ".$isi["tanggal_lahir"]; ?></td>
-                                            <td><?php echo $isi["agama"]; ?></td>
+                                            <td><?php echo agama($isi['agama']); ?></td>
                                             <td>
                                                 <a href="" role="button" data-bs-target="" data-bs-toggle=""
                                                     aria-controls="" aria-current="page" class="btn btn-danger">
@@ -89,26 +124,23 @@
                                                     <i class="fas fa-file-alt"></i>
                                                 </a>
                                             </td>
-                                            <?php 
-                                                if(!empty($_GET["act_seleksi"] == "yes")){
-                                            ?>
-                                            <form action="" enctype="multipart/form-data" method="post">
-
-                                            </form>
-                                            <?php
-                                                }else{
-                                            ?>
-                                            <td><?php echo $isi["seleksi"]; ?></td>
-                                            <?php
-                                                }
-                                            ?>
                                             <td>
-                                                <a href="" aria-current="page" class="btn btn-secondary hover">
+                                                <a href="?page=edit-siswa&nama=<?=$_SESSION['nama_pengguna']?>&id_siswa=<?=$isi['id_siswa']?>"
+                                                    aria-current="page" class="btn btn-secondary hover">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
-                                                <a href="" aria-current="page" class="btn btn-danger hover">
+                                                <?php 
+                                                    if(!empty($_GET["hapus"]=="yes")){
+                                                ?>
+                                                <a href="?act=hapus&nis=<?=$isi['nis']?>&id_siswa=<?=$isi['id_siswa']?>"
+                                                    role="button" aria-current="page"
+                                                    onclick="javascript:return confirm('apakah anda ingin menghapus data ini ?')"
+                                                    class="btn btn-danger hover">
                                                     <i class="fas fa-trash"></i>
                                                 </a>
+                                                <?php
+                                                    }
+                                                ?>
                                             </td>
                                         </tr>
                                         <?php
