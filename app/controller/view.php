@@ -17,6 +17,14 @@ class ViewAuth {
         $this->konfig->AuthLogin($userMail,$password);
     }
 
+    public function LoginSiswa(){
+        session_start();
+        $nisEmail = htmlspecialchars($_POST["nisEmail"]);
+        $password = htmlspecialchars($_POST["password"]);
+        password_verify($password, PASSWORD_DEFAULT);
+        $this->konfig->AuthLoginSiswa($nisEmail,$password);
+    }
+
     public function Read(){
         $row = $this->konfig->AuthRead();
         $hasil = $row->fetchAll();
@@ -169,6 +177,19 @@ class ViewPembayaran {
         $nama = $_SESSION['nama_pengguna'];
         echo "<script lang='javascript'>location.href='../ui/header.php?page=pembayaran&nama=$nama&id_kelas=$id_kelas'</script>";
         return $hasil;
+    }
+
+    public function siswaPembayaran(){
+        $id_kelas = htmlspecialchars($_POST["id_kelas"]) ? htmlentities($_POST["id_kelas"]) : $_POST["id_kelas"];
+        $id_siswa = htmlspecialchars($_POST["id_siswa"]) ? htmlentities($_POST["id_siswa"]) : $_POST["id_siswa"];
+        $bulan = htmlspecialchars($_POST["bulan_input"]) ? htmlentities($_POST["bulan_input"]) : $_POST["bulan_input"];
+        $tanggal = htmlspecialchars($_POST["tanggal_input"]) ? htmlentities($_POST["tanggal_input"]) : $_POST["tanggal_input"];
+        $total = htmlspecialchars($_POST["total"]) ? htmlentities($_POST["total"]) : $_POST["total"];
+        $selesai = "yes";
+        $row = $this->konfig->pembayaranSiswa($id_siswa,$id_kelas,$bulan,$tanggal,$total,$selesai);
+        $nama = $_SESSION['nama_pengguna'];
+        echo "<script lang='javascript'>location.href='../ui/header.php?page=pembayaran&nama=$nama&id_kelas=$id_kelas'</script>";
+        return $row;
     }
 }
 
@@ -363,6 +384,18 @@ class ViewAccount {
         $namas = $_SESSION['nama_pengguna'];
         echo "<script lang='javascript'>location.href='../ui/header.php?page=akun&nama=$namas'</script>";
     }
+
+    public function edit(){
+        $email = htmlspecialchars($_POST["email"]) ? htmlentities($_POST["email"]) : $_POST["email"];
+        $username = htmlspecialchars($_POST["username"]) ? htmlentities($_POST["username"]) : $_POST["username"];
+        $password = htmlspecialchars($_POST["password"]) ? htmlentities($_POST["password"]) : $_POST["password"];
+        $nama = htmlspecialchars($_POST["nama"]) ? htmlentities($_POST["nama"]) : $_POST["nama"];
+        $user_level = htmlspecialchars($_POST["user_level"]) ? htmlentities($_POST["user_level"]) : $_POST["user_level"];
+        $this->konfig->AuthEdited($email,$username,$password,$nama,$user_level);
+        $namas = $_SESSION['nama_pengguna'];
+        echo "<script lang='javascript'>location.href='../ui/header.php?page=beranda&nama=$namas'</script>";
+    }
+
 }
 
 use model\Siswa;
@@ -379,10 +412,18 @@ class ViewSiswa {
         return $hasil;
     }
 
-        public function create(){
+    public function create(){
         $id_siswa = htmlspecialchars($_POST["id_siswa"]) ? htmlentities($_POST["id_siswa"]) : $_POST["id_siswa"];
         $id_kelas = htmlspecialchars($_POST["id_kelas"]) ? htmlentities($_POST["id_kelas"]) : $_POST["id_kelas"];
         $this->konfig->createData($id_siswa,$id_kelas);
+        $nama = $_SESSION['nama_pengguna'];
+        echo "<script lang='javascript'>location.href='../ui/header.php?page=siswa&nama=$nama'</script>";
+    }
+
+    public function update(){
+        $id_siswa = htmlspecialchars($_POST["id_siswa"]) ? htmlentities($_POST["id_siswa"]) : $_POST["id_siswa"];
+        $id_kelas = htmlspecialchars($_POST["id_kelas"]) ? htmlentities($_POST["id_kelas"]) : $_POST["id_kelas"];
+        $this->konfig->UpdateData($id_kelas, $id_siswa);
         $nama = $_SESSION['nama_pengguna'];
         echo "<script lang='javascript'>location.href='../ui/header.php?page=siswa&nama=$nama'</script>";
     }

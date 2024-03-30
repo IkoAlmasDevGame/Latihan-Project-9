@@ -19,7 +19,47 @@ class Auth {
     }
 
     public function AuthLoginSiswa(){
+        $nisEmail = htmlspecialchars($_POST["nisEmail"]);
+        $password = htmlspecialchars($_POST["password"]);
+        password_verify($password, PASSWORD_DEFAULT);
+        $date = Date('Y-m-d H:i:s a');
 
+        if($nisEmail == "" || $password == ""){
+            header("location:../auth/index.php");
+            exit(0);
+        }
+
+        $table = "tb_pengguna";
+        $sql = "SELECT * FROM $table WHERE nis = ? and password = ? || email='$nisEmail' and password='$password'";
+        $dbAuth = $this->db->prepare($sql);
+        $dbAuth->execute(array($nisEmail,$password));
+        $cek = $dbAuth->rowCount();
+
+        if($cek > 0){
+            $b = array($nisEmail,$password,$date);
+            $response[$table] = $b;
+            if($row = $dbAuth->fetch()){
+                if($row["user_level"] == "Siswa"){
+                    $_SESSION["id"] = $row["id_pengguna"];
+                    $_SESSION["email_pengguna"] = $row["email"];
+                    $_SESSION["nama_pengguna"] = $row["nama"];
+                    $_SESSION["nis_pengguna"] = $row["nis"];
+                    $_SESSION["user_level"] = "Siswa";
+                    $_SESSION["created_At"] = $row["created_At"];
+                    $_SESSION["created_End"] = $date;
+                    header("location:../ui/header.php?page=beranda&nis=".$_SESSION["nis_pengguna"]);
+                }
+                $_SESSION["status"] = true;
+                array_push($response[$table], $row);
+                $this->db->prepare("UPDATE $table SET created_End = ? WHERE username='$nisEmail'")->execute(array($date));
+                $this->db->prepare("UPDATE $table SET created_End = ? WHERE email='$nisEmail'")->execute(array($date));
+                exit(0);
+            }else{
+                $_SESSION["status"] = false;
+                header("location:../auth/index.php");
+                exit(0);                
+            }
+        }
     }
 
     public function AuthLogin($userMail, $password){
@@ -292,8 +332,19 @@ class Pembayaran {
         return $row;
     }
     
-    public function pembayaranSiswa(){
-        
+    public function pembayaranSiswa($id_siswa,$id_kelas,$bulan,$tanggal,$total,$selesai){
+        $id_kelas = htmlspecialchars($_POST["id_kelas"]) ? htmlentities($_POST["id_kelas"]) : $_POST["id_kelas"];
+        $id_siswa = htmlspecialchars($_POST["id_siswa"]) ? htmlentities($_POST["id_siswa"]) : $_POST["id_siswa"];
+        $bulan = htmlspecialchars($_POST["bulan_input"]) ? htmlentities($_POST["bulan_input"]) : $_POST["bulan_input"];
+        $tanggal = htmlspecialchars($_POST["tanggal_input"]) ? htmlentities($_POST["tanggal_input"]) : $_POST["tanggal_input"];
+        $total = htmlspecialchars($_POST["total"]) ? htmlentities($_POST["total"]) : $_POST["total"];
+        $selesai = "yes";
+
+        $table = "tb_pembayaran";
+        $sql = "INSERT INTO $table (id_siswa,id_kelas,bulan_input,tanggal_input,total,selesai) VALUES (?,?,?,?,?,?)";
+        $row = $this->db->prepare($sql);
+        $row->execute(array($id_siswa,$id_kelas,$bulan,$tanggal,$total,$selesai));
+        return $row;
     }
 }
 
@@ -406,13 +457,13 @@ class Pendaftaran {
         $row->execute(array($id));
         /* Hapus Tembak */ 
         $iHasil = $row->fetch();
+        $ii = $iHasil['nis'];
         $sql_2 = "DELETE FROM tb_pengguna WHERE nis = ?";
         $sql_3 = "DELETE FROM tb_siswa WHERE id_siswa = ?";
         $sql_4 = "DELETE FROM tb_pendaftaran WHERE id_siswa = ?";
-        $row = $this->db->prepare($sql_2)->execute(array($iHasil['nis']));
+        $row = $this->db->prepare($sql_2)->execute(array($ii));
         $row = $this->db->prepare($sql_3)->execute(array($iHasil['id_siswa']));
         $row = $this->db->prepare($sql_4)->execute(array($iHasil['id_siswa']));
-        echo "<script type='text/javascript'>location.href='../ui/header.php?page=lihat-siswa&nama=$_SESSION[nama_pengguna]'</script>";
         return $row;
     }
 }
@@ -442,6 +493,19 @@ class Account {
         $a_register = array($email,$username,$password,$nama,$user_level,$created_at,$created_end);
         $row->execute($a_register);
     }
+
+    public function AuthEdited($email,$username,$password,$nama,$user_level){
+        $email = htmlspecialchars($_POST["email"]) ? htmlentities($_POST["email"]) : $_POST["email"];
+        $username = htmlspecialchars($_POST["username"]) ? htmlentities($_POST["username"]) : $_POST["username"];
+        $password = htmlspecialchars($_POST["password"]) ? htmlentities($_POST["password"]) : $_POST["password"];
+        $nama = htmlspecialchars($_POST["nama"]) ? htmlentities($_POST["nama"]) : $_POST["nama"];
+        $user_level = htmlspecialchars($_POST["user_level"]) ? htmlentities($_POST["user_level"]) : $_POST["user_level"];
+        
+        $table = "tb_user";
+        $sql = "UPDATE $table SET email = ?, username = ?, password = ?, user_level = ? WHERE nama = ?";
+        $row = $this->db->prepare($sql);
+        $row->execute(array($email,$username,$password,$nama,$user_level));
+    }
 }
 
 // 9
@@ -468,6 +532,16 @@ class Siswa {
         $sql = "INSERT INTO $table (id_siswa,id_kelas) VALUES (?,?)";
         $row = $this->db->prepare($sql);
         $row->execute(array($id_siswa,$id_kelas));
+        return $row;
+    }
+
+    public function UpdateData($id_kelas, $id_siswa){
+        $id_siswa = htmlspecialchars($_POST["id_siswa"]) ? htmlentities($_POST["id_siswa"]) : $_POST["id_siswa"];
+        $id_kelas = htmlspecialchars($_POST["id_kelas"]) ? htmlentities($_POST["id_kelas"]) : $_POST["id_kelas"];
+        $table = "tb_siswa";
+        $sql = "UPDATE $table SET id_kelas = ? WHERE id_siswa = ?";
+        $row = $this->db->prepare($sql);
+        $row->execute(array($id_kelas,$id_siswa));
         return $row;
     }
 }

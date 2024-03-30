@@ -45,7 +45,19 @@
                                     aria-current="page" class="btn btn-danger active">
                                     Update Kelas Siswa
                                 </a>
+                                <a href="?page=siswa&nama=<?=$_SESSION['nama_pengguna']?>&informasi=yes"
+                                    aria-current="page" class="btn btn-secondary active">
+                                    Information
+                                </a>
                             </div>
+                            <?php 
+                                if(!empty($_GET["informasi"]=="yes")){
+                                echo "<div aria-hidden='true' tabindex='-1'>
+                                    <h4 class='card-title fs-6 fw-lighter fst-normal text-end'>Klick Submit untuk Masuk Kelas 1 untuk
+                                        siswa baru mendaftar</h4>
+                                    </div>";
+                                }
+                            ?>
                             <div class="pb-2"></div>
                         </div>
                         <div class="table-responsive-md table-responsive-lg">
@@ -74,7 +86,7 @@
                                         <?php 
                                             if(!empty($_GET['update']=="yes")){
                                         ?>
-                                        <form action="" method="post">
+                                        <form action="?act=update-data" enctype="multipart/form-data" method="post">
                                             <td class="text-center">
                                                 <input type="hidden" name="id_siswa" value="<?=$isi['id_siswa']?>">
                                                 <select name="id_kelas" class="form-control" required type="submit"

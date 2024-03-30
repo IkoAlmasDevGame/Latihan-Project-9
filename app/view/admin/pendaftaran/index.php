@@ -109,20 +109,64 @@
                                             <td><?php echo $isi["tempat_lahir"].", ".$isi["tanggal_lahir"]; ?></td>
                                             <td><?php echo agama($isi['agama']); ?></td>
                                             <td>
-                                                <a href="" role="button" data-bs-target="" data-bs-toggle=""
-                                                    aria-controls="" aria-current="page" class="btn btn-danger">
+                                                <a href="" role="button" data-bs-target="#photoSiswa"
+                                                    data-bs-toggle="modal" aria-controls="photoSiswa"
+                                                    aria-current="page" tabindex="-1" class="btn btn-danger">
                                                     <i class="fas fa-user-alt"></i>
                                                 </a>
+                                                <div class="modal fade" id="photoSiswa" tabindex="-1"
+                                                    aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+
+                                                            </div>
+                                                            <div class="modal-body">
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </td>
                                             <td>
-                                                <a href="" role="button" data-bs-target="" data-bs-toggle=""
-                                                    aria-controls="" aria-current="page" class="btn btn-primary">
+                                                <a href="" role="button" data-bs-target="#docSiswa1"
+                                                    data-bs-toggle="modal" tabindex="-1" aria-controls="docSiswa1"
+                                                    aria-current="page" class="btn btn-primary">
                                                     <i class="fas fa-file-alt"></i>
                                                 </a>
-                                                <a href="" role="button" data-bs-target="" data-bs-toggle=""
-                                                    aria-controls="" aria-current="page" class="btn btn-info">
+                                                <a href="" role="button" data-bs-target="#docSiswa2"
+                                                    data-bs-toggle="modal" tabindex="-1" aria-controls="docSiswa2"
+                                                    aria-current="page" class="btn btn-info">
                                                     <i class="fas fa-file-alt"></i>
                                                 </a>
+                                                <div class="modal fade" id="docSiswa1" tabindex="-1" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h4 class="modal-title fs-4 fw-lighter fst-normal">
+                                                                    Document
+                                                                    PDF (1)</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal fade" id="docSiswa2" tabindex="-1" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h4 class="modal-title fs-4 fw-lighter fst-normal">
+                                                                    Document
+                                                                    PDF (2)</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </td>
                                             <td>
                                                 <a href="?page=edit-siswa&nama=<?=$_SESSION['nama_pengguna']?>&id_siswa=<?=$isi['id_siswa']?>"
@@ -132,7 +176,7 @@
                                                 <?php 
                                                     if(!empty($_GET["hapus"]=="yes")){
                                                 ?>
-                                                <a href="?act=hapus&nis=<?=$isi['nis']?>&id_siswa=<?=$isi['id_siswa']?>"
+                                                <a href="?aksi=hapus&nis=<?=$isi['nis']?>&id_siswa=<?=$isi['id_siswa']?>"
                                                     role="button" aria-current="page"
                                                     onclick="javascript:return confirm('apakah anda ingin menghapus data ini ?')"
                                                     class="btn btn-danger hover">

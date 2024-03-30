@@ -193,16 +193,19 @@
                                         <td>
                                             <input type="file" name="file_kk" class="form-control" required
                                                 aria-required="true">
+                                            <input type="hidden" name="file_akte" value="">
                                         </td>
                                         <td>File Document PDF <br>(Akte Lahir)</td>
                                         <td>
                                             <input type="file" name="file_akte" class="form-control" required
                                                 aria-required="true">
+                                            <input type="hidden" name="file_akte" value="">
                                         </td>
                                         <td>File Photo</td>
                                         <td>
                                             <input type="file" name="file_image" class="form-control" required
                                                 aria-required="true">
+                                            <input type="hidden" name="file_image" value="">
                                         </td>
                                     </tr>
                                 </table>

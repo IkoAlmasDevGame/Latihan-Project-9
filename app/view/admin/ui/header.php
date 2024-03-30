@@ -45,6 +45,12 @@
                         header("location:../auth/index.php");
                         exit(0);
                     break;
+
+                    case 'hapus':
+                        $viewPendaftaran->StudentHapus();
+                        $nama = $_SESSION['nama_pengguna'];
+                        header("location:../ui/header.php?page=lihat-siswa&nama=".$nama);
+                    break;
                     
                     default:
                         require_once("../dashboard/index.php");
@@ -148,6 +154,9 @@
                     case 'tambah-akun':
                         $viewAccount->Register();
                         break;
+                    case 'edit-akun':
+                        $viewAccount->edit();
+                        break;
                     /* Account Akhir */
 
                     /* pendaftaran */ 
@@ -158,13 +167,13 @@
                     case 'edit-siswa-baru':
                         $viewPendaftaran->StudentEdit();
                         break;
-
-                    case 'hapus':
-                        $viewPendaftaran->StudentHapus();
-                    break;
-
+                        
                     case 'create-data':
                         $viewSiswa->create();
+                        break;
+
+                    case 'update-data':
+                        $viewSiswa->update();
                         break;
                     /* Pendaftaran akhir */ 
 
@@ -222,6 +231,10 @@
                     /* Pembayaran */
                     case 'get-pembayaran':
                         $viewPembayaran->pembayaran();
+                        break; 
+
+                    case 'pembayaran':
+                        $viewPembayaran->siswaPembayaran();
                         break; 
 
                     default:
