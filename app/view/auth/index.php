@@ -25,10 +25,10 @@
                             <ul class="nav flex-column ms-auto mb-2 mb-lg-0">
                                 <div class="navbar-nav">
                                     <li class="nav-item">
-                                        <a href="index.php" class="nav-link hover">Beranda</a>
+                                        <a href="../index.php" class="nav-link hover">Beranda</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="auth/index.php" class="nav-link hover">Login</a>
+                                        <a href="index.php" class="nav-link hover">Login</a>
                                     </li>
                                 </div>
                             </ul>
