@@ -45,7 +45,7 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive-md table-responsive-lg">
-                            <form action="" enctype="multipart/form-data" method="post">
+                            <form action="?act=tambah-siswa-baru" enctype="multipart/form-data" method="post">
                                 <table class="table table-striped">
                                     <th class="text-center fw-lighter fst-normal" colspan="8">DATA SISWA BARU</th>
                                     <tr>
