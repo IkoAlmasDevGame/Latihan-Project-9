@@ -119,10 +119,19 @@
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-
+                                                                <h4 class="modal-title fs-4 fw-lighter fst-normal">Photo
+                                                                    Siswa</h4>
+                                                                <button type="button" class="btn-close"
+                                                                    data-bs-dismiss="modal"></button>
                                                             </div>
                                                             <div class="modal-body">
-
+                                                                <div class="row">
+                                                                    <div class="img-thumbnail">
+                                                                        <img src="../../../../assets/image/<?=$isi["file_image"]?>"
+                                                                            alt="<?=$isi["file_image"]?>"
+                                                                            class="img-responsive">
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -146,9 +155,13 @@
                                                                 <h4 class="modal-title fs-4 fw-lighter fst-normal">
                                                                     Document
                                                                     PDF (1)</h4>
+                                                                <button type="button" class="btn-close"
+                                                                    data-bs-dismiss="modal"></button>
                                                             </div>
                                                             <div class="modal-body">
-
+                                                                <embed
+                                                                    src="../../../../assets/document/<?=$isi["file_kk"]?>"
+                                                                    type="application/pdf">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -160,9 +173,13 @@
                                                                 <h4 class="modal-title fs-4 fw-lighter fst-normal">
                                                                     Document
                                                                     PDF (2)</h4>
+                                                                <button type="button" class="btn-close"
+                                                                    data-bs-dismiss="modal"></button>
                                                             </div>
                                                             <div class="modal-body">
-
+                                                                <embed
+                                                                    src="../../../../assets/document/<?=$isi["file_akte"]?>"
+                                                                    type="application/pdf">
                                                             </div>
                                                         </div>
                                                     </div>
