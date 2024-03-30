@@ -7,6 +7,25 @@
         <title>Dashboard Login</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        <?php 
+            require_once("../../database/koneksi.php");
+            require_once("../../model/model.php");
+            require_once("../../controller/view.php");
+            $mAuth = new view\ViewAuth($configs);
+            if(!isset($_GET["act"])){
+                require_once("../auth/index.php");
+            }else{
+                switch ($_GET["act"]) {
+                    case 'signin':
+                        $mAuth->LoginSiswa();
+                        break;
+                    
+                    default:
+                        require_once("../auth/index.php");
+                        break;
+                }
+            }
+        ?>
     </head>
 
     <body onload="startTime()">
@@ -35,6 +54,66 @@
                         </aside>
                     </header>
                 </nav>
+
+                <section>
+                    <div class="container-fluid py-5 p-5 rounded-1 bg-secondary min-vh-100">
+                        <div class="container-fluid py-5 rounded-1 bg-light min-vh-100">
+                            <h3 class="fs-5 fw-lighter text-center pt-5 mt-5">Login Dashboard Siswa</h3>
+                            <div class="d-flex justify-content-center align-items-center flex-wrap pt-5 mt-5">
+                                <div class="card col-md-5 col-lg-5">
+                                    <div class="card-header">
+                                        <h3 class="fs-3 card-title text-center">Login Siswa</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <form action="../auth/index.php?act=signin" method="post">
+                                            <div class="row align-items-center form-group mb-2 mb-lg-0">
+                                                <label for="userMail" class="input-group-addon">Email /
+                                                    nomer induk siswa</label>
+                                                <div class="input-group-text form-control">
+                                                    <div class="input-group">
+                                                        <input type="text" name="nisEmail" id="nisEmail"
+                                                            class="form-control"
+                                                            placeholder="masukkan nomer induk siswa atau email anda ..."
+                                                            required aria-required="true">
+                                                    </div>
+                                                </div>
+                                                <div class="mb-2"></div>
+                                                <label for="passMail" class="input-group-addon">Kata
+                                                    Sandi <small class="fs-6 fw-lighter fst-normal
+                                                         text-muted gap-3">[Tanggal lahir password anda]</small>
+                                                    <br>
+                                                    <small class="fs-6 fw-lighter fst-normal
+                                                         text-muted gap-3">Contoh password : [05-05-2021]</small>
+                                                </label>
+                                                <div class="input-group-text form-control">
+                                                    <div class="input-group">
+                                                        <input type="password" name="password" id="passMail"
+                                                            class="form-control"
+                                                            placeholder="masukkan kata sandi anda ..." required
+                                                            aria-required="true">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <p class="card-footer container">
+                                                    <button type="submit" class="btn btn-primary hover">
+                                                        <i class="fa fa-sign-in-alt"></i>
+                                                        <span>Login</span>
+                                                    </button>
+                                                    <button type="reset" class="btn btn-danger hover">
+                                                        <i class="fa fa-eraser"></i>
+                                                        <span>Hapus</span>
+                                                    </button>
+                                                </p>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
             </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
