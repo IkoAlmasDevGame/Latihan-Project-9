@@ -67,11 +67,7 @@
                     case 'absensi':
                         require_once("../absensi/index.php");
                         break;
-                                             
-                    case 'pelajaran':
-                        require_once("../pelajaran/index.php");
-                        break;
-                                                
+                                                                                             
                     case 'pesan':
                         require_once("../pesan/index.php");
                         break;
