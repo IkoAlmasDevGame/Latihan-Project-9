@@ -181,6 +181,7 @@ CREATE TABLE `tb_pembayaran` (
   `id_pembayaran` int(11) NOT NULL,
   `id_siswa` int(11) NOT NULL,
   `id_kelas` int(11) NOT NULL,
+  `bulan_input` varchar(12) NOT NULL,
   `tanggal_input` varchar(12) NOT NULL,
   `total` float NOT NULL,
   `selesai` varchar(12) NOT NULL DEFAULT 'yes'
