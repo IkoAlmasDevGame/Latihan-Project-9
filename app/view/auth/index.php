@@ -95,7 +95,7 @@
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <p class="card-footer container">
+                                                <p class="card-footer text-end container mt-1 mt-lg-1">
                                                     <button type="submit" class="btn btn-primary hover">
                                                         <i class="fa fa-sign-in-alt"></i>
                                                         <span>Login</span>
