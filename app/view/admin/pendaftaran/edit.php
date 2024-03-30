@@ -7,6 +7,12 @@
         <title>Halaman Data Siswa Baru</title>
         <?php 
             require_once("../ui/header.php");
+            $id = htmlspecialchars($_GET["id_siswa"]) ? htmlentities($_GET["id_siswa"]) : $_GET["id_siswa"];
+            $table = "";
+            $sql = "";
+            $row = $configs->prepare($sql);
+            $row->execute(array($id));
+            $hasil = $row->fetchAll();
         ?>
     </head>
 
@@ -31,7 +37,7 @@
                                     class="text-decoration-none">Lihat Data Masuk</a>
                             </li>
                             <li class="breadcrumb breadcrumb-item">
-                                <a href="?page=edit-siswa&nama=<?=$_SESSION["nama_pengguna"]?>&nis=<?="";?>"
+                                <a href="?page=edit-siswa&nama=<?=$_SESSION["nama_pengguna"]?>&id_siswa=<?=$hasil["id_siswa"];?>"
                                     aria-current="page" class="text-decoration-none">Edit Siswa</a>
                             </li>
                         </div>
@@ -42,6 +48,9 @@
                         <h4 class="card-title fs-4 fst-normal fw-lighter">Edit Data Siswa</h4>
                     </div>
                     <div class="card-body">
+                        <?php 
+                            foreach ($hasil as $key) {
+                        ?>
                         <form action="?act=edit-siswa-baru" enctype="multipart/form-data" method="post">
                             <table class="table table-striped">
                                 <th class="text-center fw-lighter fst-normal" colspan="8">EDIT DATA SISWA BARU</th>
@@ -53,6 +62,9 @@
                                 <th class="text-center fw-lighter fst-normal" colspan="8">DATA DOCUMENT SISWA</th>
                             </table>
                         </form>
+                        <?php
+                            }
+                        ?>
                     </div>
                 </div>
             </div>
